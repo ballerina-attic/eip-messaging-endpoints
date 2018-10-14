@@ -110,30 +110,24 @@ service<http:Service> SensorEventService bind sensorEventListner {
     }
 }
 function messageSender() {
-    http:Request req1;
-    json sampleRequest1 = { "ID": 27125088, "SID": 4344, "TIME_S": "1536423224", "TIME_E": "1536423584", "TYPE": "EQ",
+    json sensorJson = { "ID": 27125088, "SID": 4344, "TIME_S": "1536423224", "TIME_E": "1536423584", "TYPE": "EQ",
         "C_DATA": "41.40338, 2.17403", "R_SCALE": 10 };
-    string msg1 = sampleRequest1.toString();
-    mb:Message message1 = check queueGeoMessage.createTextMessage(msg1);
-    _ = queueGeoMessage->send(message1);
-    http:Request req2;
-    json sampleRequest2 = { "ID": 67602894, "SID": 1781, "TIME_S": "1536596384", "STATUS": "1122" };
-    string msg2 = sampleRequest2.toString();
-    mb:Message message2 = check queueGeoMessage.createTextMessage(msg2);
-    _ = queueHealthCheck->send(message2);
-    http:Request req3;
-    json sampleRequest3 = { "ID": 88885089, "SID": 5848, "TIME_S": "1536578384", "DATA":
+    string sensorText = sensorJson.toString();
+    mb:Message sensorMessage = check queueGeoMessage.createTextMessage(sensorText);
+    _ = queueGeoMessage->send(sensorMessage);
+    json healthJson = { "ID": 67602894, "SID": 1781, "TIME_S": "1536596384", "STATUS": "1122" };
+    string healthText = healthJson.toString();
+    mb:Message healthMessage = check queueGeoMessage.createTextMessage(healthText);
+    _ = queueHealthCheck->send(healthMessage);
+    json maintenanceJson = { "ID": 88885089, "SID": 5848, "TIME_S": "1536578384", "DATA":
     "ROTC1234 module need to be replaced" };
-    string msg3 = sampleRequest3.toString();
-    mb:Message message3 = check queueGeoMessage.createTextMessage(msg3);
-    _ = queueMaintenance->send(message3);
-    http:Request req4;
-    json sampleRequest4 = { "ID": 54256677, "SID": 7098, "TIME_S": "1536599984", "DATA": "Sensor need to be calibrated"
-    }
-    ;
-    string msg4 = sampleRequest4.toString();
-    mb:Message message4 = check queueGeoMessage.createTextMessage(msg4);
-    _ = queueCalibration->send(message4);
+    string maintenanceText = maintenanceJson.toString();
+    mb:Message maintenanceMessage = check queueGeoMessage.createTextMessage(maintenanceText);
+    _ = queueMaintenance->send(maintenanceMessage);
+    json calibJson = { "ID": 54256677, "SID": 7098, "TIME_S": "1536599984", "DATA": "Sensor need to be calibrated" };
+    string calibText = calibJson.toString();
+    mb:Message calibMessage = check queueGeoMessage.createTextMessage(calibText);
+    _ = queueCalibration->send(calibMessage);
 }
 @test:BeforeSuite
 function beforeFunc() {

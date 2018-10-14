@@ -96,19 +96,16 @@ function messageSender() {
     activityReq.setJsonPayload(activitySampleRequest);
     var activityResp = httpEndpoint->post("/activity", activityReq);
     runtime:sleep(2000);
-
     http:Request healthReq;
     json healthSampleRequest = { "ID": 67602894, "SID": 1781, "TIME_S": "1536596384", "STATUS": "1122" };
     healthReq.setJsonPayload(healthSampleRequest);
     var healthResp = httpEndpoint->post("/health", healthReq);
     runtime:sleep(2000);
-
     http:Request maintenanceReq;
     json maintenanceSampleRequest = { "ID": 88885089, "SID": 5848, "TIME_S": "1536578384", "DATA": "ROTC1234 module need to be replaced" };
     maintenanceReq.setJsonPayload(maintenanceSampleRequest);
     var maintenanceResp = httpEndpoint->post("/maintenance", maintenanceReq);
     runtime:sleep(2000);
-
     http:Request calibReq;
     json calibSampleRequest = { "ID": 54256677, "SID": 7098, "TIME_S": "1536599984", "DATA": "Sensor need to be calibrated" };
     calibReq.setJsonPayload(calibSampleRequest);

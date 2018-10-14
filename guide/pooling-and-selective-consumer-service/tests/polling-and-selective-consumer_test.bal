@@ -77,34 +77,30 @@ service<mb:Consumer> ResearchListener bind subscriberResearch {
 }
 # The function ```messagePublisher()``` sends the messages to ```ProcessedQueue```.
 function messagePublisher() {
-    json requestMessage1 = { "Message": "An earthquake of magnitude 10 on the Richter scale near Panama", "AlarmStatus":
+    json priorityOneJson = { "Message": "An earthquake of magnitude 10 on the Richter scale near Panama", "AlarmStatus":
     "ON", "DesasterRecoveryTeamStatus": "Dispatched" };
-    string msg1 = requestMessage1.toString();
-    mb:Message message1 = check queueSender.createTextMessage(msg1);
-    var p1 = message1.setPriority(1);
-    log:printInfo("P1 is:" + check message1.getPriority());
-    _ = queueSender->send(message1);
+    string priorityOneText = priorityOneJson.toString();
+    mb:Message priorityOneMessage = check queueSender.createTextMessage(priorityOneText);
+    var priorityOne = priorityOneMessage.setPriority(1);
+    _ = queueSender->send(priorityOneMessage);
     runtime:sleep(5000);
-    json requestMessage2 = { "AlarmStatus": "ON" };
-    string msg2 = requestMessage2.toString();
-    mb:Message message2 = check queueSender.createTextMessage(msg2);
-    var p2 = message2.setPriority(2);
-    log:printInfo("P2 is:" + check message2.getPriority());
-    _ = queueSender->send(message2);
+    json priorityTwoJson = { "AlarmStatus": "ON" };
+    string priorityTwoText = priorityTwoJson.toString();
+    mb:Message priorityTwoMessage = check queueSender.createTextMessage(priorityTwoText);
+    var priorityTwo = priorityTwoMessage.setPriority(2);
+    _ = queueSender->send(priorityTwoMessage);
     runtime:sleep(5000);
-    json requestMessage3 = { "Maintenance": "Need to send a maintenance team to the sensor with SID 4338" };
-    string msg3 = requestMessage3.toString();
-    mb:Message message3 = check queueSender.createTextMessage(msg3);
-    var p3 = message3.setPriority(3);
-    log:printInfo("P3 is:" + check message3.getPriority());
-    _ = queueSender->send(message3);
+    json priorityThreeJson = { "Maintenance": "Need to send a maintenance team to the sensor with SID 4338" };
+    string priorityThreeText = priorityThreeJson.toString();
+    mb:Message priorityThreeMessage = check queueSender.createTextMessage(priorityThreeText);
+    var priorityThree = priorityThreeMessage.setPriority(3);
+    _ = queueSender->send(priorityThreeMessage);
     runtime:sleep(5000);
-    json requestMessage4 = { "DATA": "lots of data need to analyze" };
-    string msg4 = requestMessage4.toString();
-    mb:Message message4 = check queueSender.createTextMessage(msg4);
-    var p4 = message4.setPriority(4);
-    log:printInfo("P4 is:" + check message4.getPriority());
-    _ = queueSender->send(message4);
+    json priorityFourJson = { "DATA": "lots of data need to analyze" };
+    string priorityFourText = priorityFourJson.toString();
+    mb:Message priorityFourMessage = check queueSender.createTextMessage(priorityFourText);
+    var priorityFour = priorityFourMessage.setPriority(4);
+    _ = queueSender->send(priorityFourMessage);
     runtime:sleep(5000);
 }
 @test:BeforeSuite
