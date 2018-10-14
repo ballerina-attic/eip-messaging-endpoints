@@ -66,16 +66,16 @@ service<mb:Consumer> geoListener bind queueReceiver {
         };
         string messageText = check message.getTextMessageContent();
         log:printInfo("Message received with the priority of: " + check priority);
-        if (priority == 1){
+        if (priority == 1) {
             mb:Message msg = check NotifyAuthority.createTextMessage(messageText);
             _ = NotifyAuthority->send(msg);
-        } else if (priority == 2){
+        } else if (priority == 2) {
             mb:Message msg = check AlarmSetoff.createTextMessage(messageText);
             _ = AlarmSetoff->send(msg);
-        } else if (priority == 3){
+        } else if (priority == 3) {
             mb:Message msg = check StatusAndMaintenance.createTextMessage(messageText);
             _ = StatusAndMaintenance->send(msg);
-        } else if (priority == 4){
+        } else if (priority == 4) {
             mb:Message msg = check Research.createTextMessage(messageText);
             _ = Research->send(msg);
         }
