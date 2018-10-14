@@ -51,7 +51,7 @@ service<http:Service> MessageProcessingService bind httpListner {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
         log:printInfo("Message received at /activity: " + requestMessage.toString());
-        json responseMessage1 = { "Message": "Earth Quake of 10 Richter Scale at the loaction near Panama",
+        json responseMessage1 = { "Message": "An earthquake of magnitude 10 on the Richter scale near Panama",
             "AlarmStatus":
             "ON", "DesasterRecoveryTeamStatus": "Dispatched" };
         string msg1 = responseMessage1.toString();

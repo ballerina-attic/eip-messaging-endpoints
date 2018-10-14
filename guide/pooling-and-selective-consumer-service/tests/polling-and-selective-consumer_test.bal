@@ -77,7 +77,7 @@ service<mb:Consumer> ResearchListener bind subscriberResearch {
 }
 # The function ```messagePublisher()``` sends the messages to ```ProcessedQueue```.
 function messagePublisher() {
-    json requestMessage1 = { "Message": "Earth Quake of 10 Richter Scale at the loaction near Panama", "AlarmStatus":
+    json requestMessage1 = { "Message": "An earthquake of magnitude 10 on the Richter scale near Panama", "AlarmStatus":
     "ON", "DesasterRecoveryTeamStatus": "Dispatched" };
     string msg1 = requestMessage1.toString();
     mb:Message message1 = check queueSender.createTextMessage(msg1);
