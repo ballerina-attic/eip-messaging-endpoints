@@ -125,35 +125,31 @@ function afterFunc() {
 }
 @test:Config
 function testNotifyAuthority() {
-    json requestMessage1 = { "Message": "Earth Quake of 10 Richter Scale at the loaction near Panama", "AlarmStatus":
+    json priorityOneJson = { "Message": "Earth Quake of 10 Richter Scale at the loaction near Panama", "AlarmStatus":
     "ON", "DesasterRecoveryTeamStatus": "Dispatched" };
-    string msg1 = requestMessage1.toString();
-    string expectedResponse = msg1;
+    string expectedResponse = priorityOneJson.toString();
     log:printInfo("Message 1 is :" + messageTexts[0]);
     test:assertEquals(messageTexts[0], expectedResponse, msg =
         "polling-and-selective-consumer-service failed at testNotifyAuthority");
 }
 @test:Config
 function testSetAlarmOff() {
-    json requestMessage2 = { "AlarmStatus": "ON" };
-    string msg2 = requestMessage2.toString();
-    string expectedResponse = msg2;
+    json priorityTwoJson = { "AlarmStatus": "ON" };
+    string expectedResponse = priorityTwoJson.toString();
     test:assertEquals(messageTexts[1], expectedResponse, msg =
         "polling-and-selective-consumer-service failed at testSetAlarmOff");
 }
 @test:Config
 function testMaintenance() {
-    json requestMessage3 = { "Maintenance": "Need to send a maintenance team to the sensor with SID 4338" };
-    string msg3 = requestMessage3.toString();
-    string expectedResponse = msg3;
+    json priorityThreeJson = { "Maintenance": "Need to send a maintenance team to the sensor with SID 4338" };
+    string expectedResponse = priorityThreeJson.toString();
     test:assertEquals(messageTexts[2], expectedResponse, msg =
         "polling-and-selective-consumer-service failed at testMaintenance");
 }
 @test:Config
 function testResearch() {
-    json requestMessage4 = { "DATA": "lots of data need to analyze" };
-    string msg4 = requestMessage4.toString();
-    string expectedResponse = msg4;
+    json priorityFourJson = { "DATA": "lots of data need to analyze" };
+    string expectedResponse = priorityFourJson.toString();
     test:assertEquals(messageTexts[3], expectedResponse, msg =
         "polling-and-selective-consumer-service failed at testResearch");
 }
