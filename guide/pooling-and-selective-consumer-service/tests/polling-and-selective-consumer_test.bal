@@ -18,9 +18,9 @@ import ballerina/http;
 import ballerina/io;
 import ballerina/log;
 import ballerina/mb;
+import ballerina/runtime;
 import ballerina/task;
 import ballerina/test;
-import ballerina/runtime;
 
 # The ```queueSender``` is for sending the messages to the queue ```ProcessedQueue``` in order to process them
 endpoint mb:SimpleQueueSender queueSender {
