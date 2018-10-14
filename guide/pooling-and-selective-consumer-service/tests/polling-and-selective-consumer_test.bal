@@ -14,58 +14,62 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/io;
-import ballerina/mb;
-import ballerina/log;
 import ballerina/http;
+import ballerina/io;
+import ballerina/log;
+import ballerina/mb;
 import ballerina/task;
 import ballerina/test;
-import ballerina/cache;
 import ballerina/runtime;
 
+# The ```queueSender``` is for sending the messages to the queue ```ProcessedQueue``` in order to process them
 endpoint mb:SimpleQueueSender queueSender {
     host: "localhost",
     port: 5672,
     queueName: "ProcessedQueue"
 };
+# The endpoint ```subscriberSetAlarmOff``` subscribes to the topic-pattern of ```Alarm``` and consumes messages of that topic.
 endpoint mb:SimpleTopicSubscriber subscriberSetAlarmOff {
     topicPattern: "Alarm"
 };
+# The endpoint ```subscriberNotifyAuthority``` subscribes to the topic-pattern of ```Authority``` and consumes messages of that topic.
 endpoint mb:SimpleTopicSubscriber subscriberNotifyAuthority {
     topicPattern: "Authority"
 };
+# The endpoint ```subscriberMaintenance``` subscribes to the topic-pattern of ```StatusAndMaintenance``` and consumes messages of that topic.
 endpoint mb:SimpleTopicSubscriber subscriberMaintenance {
     topicPattern: "StatusAndMaintenance"
 };
+# The endpoint ```subscriberResearch``` subscribes to the topic-pattern of ```Research``` and consumes messages of that topic.
 endpoint mb:SimpleTopicSubscriber subscriberResearch {
     topicPattern: "Research"
 };
 string[4] messageTexts;
+# The service ```AuthorityListener``` assiciated with the ```subscriberNotifyAuthority``` topic-subscriber which consumes the messages of the Authority topic.
 service<mb:Consumer> AuthorityListener bind subscriberNotifyAuthority {
     onMessage(endpoint consumer, mb:Message message) {
-        http:Request outRequest;
         messageTexts[0] = untaint check message.getTextMessageContent();
     }
 }
+# The service ```AlarmListner``` assiciated with the ```subscriberSetAlarmOff``` topic-subscriber which consumes the messages of the Alarm topic.
 service<mb:Consumer> AlarmListner bind subscriberSetAlarmOff {
     onMessage(endpoint consumer, mb:Message message) {
-        http:Request outRequest;
         messageTexts[1] = untaint check message.getTextMessageContent();
     }
 }
+# The service ```MaintenanceListener``` assiciated with the ```subscriberMaintenance``` topic-subscriber which consumes the messages of the StatusAndMaintenance topic.
 service<mb:Consumer> MaintenanceListener bind subscriberMaintenance {
     onMessage(endpoint consumer, mb:Message message) {
-        http:Request outRequest;
-        //messageText3 = untaint check message.getTextMessageContent();
         messageTexts[2] = untaint check message.getTextMessageContent();
     }
 }
+# The service ```ResearchListener``` assiciated with the ```subscriberResearch``` topic-subscriber which consumes the messages of the Research topic.
 service<mb:Consumer> ResearchListener bind subscriberResearch {
     onMessage(endpoint consumer, mb:Message message) {
-        http:Request outRequest;
         messageTexts[3] = untaint check message.getTextMessageContent();
     }
 }
+# The function ```messagePublisher()``` sends the messages to ```ProcessedQueue```.
 function messagePublisher() {
     json requestMessage1 = { "Message": "Earth Quake of 10 Richter Scale at the loaction near Panama", "AlarmStatus":
     "ON", "DesasterRecoveryTeamStatus": "Dispatched" };
@@ -120,7 +124,7 @@ function testNotifyAuthority() {
     "ON", "DesasterRecoveryTeamStatus": "Dispatched" };
     string msg1 = requestMessage1.toString();
     string expectedResponse = msg1;
-    //log:printInfo("Message 1 is :" + messageTexts[0]);
+    log:printInfo("Message 1 is :" + messageTexts[0]);
     test:assertEquals(messageTexts[0], expectedResponse, msg =
         "polling-and-selective-consumer-service failed at testNotifyAuthority");
 }

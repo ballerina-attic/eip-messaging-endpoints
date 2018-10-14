@@ -18,7 +18,7 @@ import ballerina/http;
 import ballerina/log;
 import ballerina/mb;
 
-documentation { Queue receiver endpoint for new geo related messages. }
+# Queue receiver endpoint for new geo related messages is ```queueReceiverGeoActivities```
 endpoint mb:SimpleQueueReceiver queueReceiverGeoActivities {
     host: "localhost",
     port: 5672,
@@ -27,7 +27,7 @@ endpoint mb:SimpleQueueReceiver queueReceiverGeoActivities {
 endpoint http:Client  GeoActivityEP {
     url: "http://localhost:8080/activity"
 };
-documentation { Queue receiver endpoint for health check messages of the sensors. }
+# Queue receiver endpoint for health check messages of the sensors is ```queueReceiverHealth```
 endpoint mb:SimpleQueueReceiver queueReceiverHealth {
     host: "localhost",
     port: 5672,
@@ -36,7 +36,7 @@ endpoint mb:SimpleQueueReceiver queueReceiverHealth {
 endpoint http:Client  HealthEP {
     url: "http://localhost:8080/health"
 };
-documentation { Queue receiver endpoint for maintenance messages of sensors. }
+# Queue receiver endpoint for maintenance messages of sensors is ```queueReceiverMaintenance```
 endpoint mb:SimpleQueueReceiver queueReceiverMaintenance {
     host: "localhost",
     port: 5672,
@@ -45,7 +45,7 @@ endpoint mb:SimpleQueueReceiver queueReceiverMaintenance {
 endpoint http:Client  MaintenanceEP {
     url: "http://localhost:8080/maintenance"
 };
-documentation { Queue receiver endpoint for calibration messages. }
+# Queue receiver endpoint for calibration messages ```queueReceiverCalibrate```
 endpoint mb:SimpleQueueReceiver queueReceiverCalibrate {
     host: "localhost",
     port: 5672,
@@ -54,9 +54,9 @@ endpoint mb:SimpleQueueReceiver queueReceiverCalibrate {
 endpoint http:Client  CalibrateEP {
     url: "http://localhost:8080/calibrate"
 };
-documentation { Service to receive messages to the new GeoActivities message queue. }
+# Service to receive messages to the new Geo-Activity messages queue is ```GeoActivities```, which listens to the ```queueReceiverGeoActivities```
+# The ```geoListener``` resource handler is for the new messages from queue ```GeoActivities```.
 service<mb:Consumer> geoListener bind queueReceiverGeoActivities {
-    documentation { Resource handler for new messages from queue. }
     onMessage(endpoint consumer, mb:Message message) {
         http:Request outRequest;
         string messageText = check message.getTextMessageContent();
@@ -66,9 +66,9 @@ service<mb:Consumer> geoListener bind queueReceiverGeoActivities {
         log:printInfo("Message recived from queue GeoActivities: " + messageText + "status:forwarded to /activity");
     }
 }
-documentation { Service to receive messages to the SensorHealth message queue. }
+# Service to receive messages to the SensorHealth message queue is ```SensorHealth``` , which listens to the ```queueReceiverHealth```
+# The ```healthListener``` resource handler is for the new messages from queue ```SensorHealth```
 service<mb:Consumer> healthListener bind queueReceiverHealth {
-    documentation { Resource handler for new messages from queue. }
     onMessage(endpoint consumer, mb:Message message) {
         http:Request outRequest;
         string messageText = check message.getTextMessageContent();
@@ -78,9 +78,9 @@ service<mb:Consumer> healthListener bind queueReceiverHealth {
         log:printInfo("Message recived from queue SensorHealth: " + messageText + "status:forwarded to /health");
     }
 }
-documentation { Service to receive messages to the Maintenance message queue. }
+# Service to receive messages to the Maintenance message queue ```Maintenance```, which listens to the ```queueReceiverMaintenance```
+# The ```maintenanceListener``` resource handler is for the new messages from queue ```Maintenance```
 service<mb:Consumer> maintenanceListener bind queueReceiverMaintenance {
-    documentation { Resource handler for new messages from queue. }
     onMessage(endpoint consumer, mb:Message message) {
         http:Request outRequest;
         string messageText = check message.getTextMessageContent();
@@ -90,9 +90,9 @@ service<mb:Consumer> maintenanceListener bind queueReceiverMaintenance {
         log:printInfo("Message recived from queue Maintenance: " + messageText + "status:forwarded to /maintenance");
     }
 }
-documentation { Service to receive messages to the Calibration message queue. }
+# Service to receive messages to the Calibration message queue ```Calibration```, which listens to the ```queueReceiverCalibrate```
+# The ```calibrateListener``` resource handler is for the new messages from queue ```Calibration```
 service<mb:Consumer> calibrateListener bind queueReceiverCalibrate {
-    documentation { Resource handler for new messages from queue. }
     onMessage(endpoint consumer, mb:Message message) {
         http:Request outRequest;
         string messageText = check message.getTextMessageContent();

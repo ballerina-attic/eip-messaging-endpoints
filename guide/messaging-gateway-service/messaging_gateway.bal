@@ -19,44 +19,51 @@ import ballerina/io;
 import ballerina/log;
 import ballerina/mb;
 
-documentation { Define the message queue endpoint for sending geo activities captured from the sensor. }
+# The ```queuesensorGeoMessage``` endpoint defines the message queue endpoint which associated with the queue ```GeoActivities``` for sending geo activities captured from the sensor.
 endpoint mb:SimpleQueueSender queuesensorGeoMessage {
     host: "localhost",
     port: 5672,
     queueName: "GeoActivities"
 };
-documentation { Define the message queue endpoint to health check messages. }
+# The ```queueHealthCheck``` endpoint defines the message queue endpoint which associated with the queue ```SensorHealth``` to health check messages.
 endpoint mb:SimpleQueueSender queueHealthCheck {
     host: "localhost",
     port: 5672,
     queueName: "SensorHealth"
 };
-documentation { Define the message queue endpoint for maintenance messages. }
+# The ```queueMaintenance``` define the message queue endpoint which associated with the queue ```Maintenance``` for maintenance messages.
 endpoint mb:SimpleQueueSender queueMaintenance {
     host: "localhost",
     port: 5672,
     queueName: "Maintenance"
 };
-documentation { Define the message queue endpoint for sensor calibration requests. }
+# The ```queueCalibration``` define the message queue endpoint which associated with the queue ```Calibration``` for maintenance messages.
 endpoint mb:SimpleQueueSender queueCalibration {
     host: "localhost",
     port: 5672,
     queueName: "Calibration"
 };
-documentation { Attributes associated with the service endpoint. }
+
+# The endpoint ```sensorEventListner``` associated with the service ```SensorEventService```. The port associated with the service is 9090.
+# The base path of the ```SensorEventService``` service is ```/service``` via HTTP/1.1.
+# The resource path for reciving geo activities captured from the sensor is defined as ```/activity```.
+# The resource path for checking the health of the EP of the sensor is defined as ```/health```
+# The resource path for invoking a service when the sensor needed mainteinance is defined as ```/maintenance```
+# The resource path for invoking a service when the sensor needed calibration is defined as ```/calibrate```
+# The recived messages on each aforementioned resources paths will be forworded to each related message queues by the assoaciation of below queue senders.
+# ```queuesensorGeoMessage```, ```queueHealthCheck```,  ```queueMaintenance```, and the ```queueCalibration```.
+
 endpoint http:Listener sensorEventListner {
     port: 9090
 };
-documentation {  via HTTP/1.1. }
 @http:ServiceConfig {
     basePath: "/service"
 }
 service<http:Service> SensorEventService bind sensorEventListner {
     @http:ResourceConfig {
-        methods: ["POST"], consumes: ["application/json"], produces: ["application/json"],
+        methods: ["POST"], consumes: ["application/json"], produces: ["plain/text"],
         path: "/activity"
     }
-    documentation { Resources for reciving geo activities captured from the sensor }
     activity(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
@@ -71,7 +78,6 @@ service<http:Service> SensorEventService bind sensorEventListner {
         methods: ["POST"],
         path: "/health"
     }
-    documentation { Resource for checking the health of the EP of the sensor}
     health(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
@@ -86,7 +92,6 @@ service<http:Service> SensorEventService bind sensorEventListner {
         methods: ["POST"],
         path: "/maintenance"
     }
-    documentation { Resource for invoking a service when the sensor needed mainteinance }
     maintanance(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
@@ -101,7 +106,6 @@ service<http:Service> SensorEventService bind sensorEventListner {
         methods: ["POST"],
         path: "/calibrate"
     }
-    documentation { Resource for invoking a service when the sensor needed calibration }
     calibrate(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();

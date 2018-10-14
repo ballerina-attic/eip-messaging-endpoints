@@ -18,41 +18,43 @@ import ballerina/mb;
 import ballerina/log;
 import ballerina/http;
 
-documentation { Queue receiver endpoint for new information messages. }
+# The endpoint ```queueReceiver``` is the queue receiver endpoint for the queue ```ProcessedQueue```.
 endpoint mb:SimpleQueueReceiver queueReceiver {
     host: "localhost",
     port: 5672,
     queueName: "ProcessedQueue"
 };
-documentation { Topic to publish  Priority 1 messages. }
+# The endpoint ```NotifyAuthority``` defines the topic to publish  Priority 1 messages as ```Authority```.
 endpoint mb:SimpleTopicPublisher NotifyAuthority {
     host: "localhost",
     port: 5672,
     topicPattern: "Authority"
 };
-documentation { Topic to publish  Priority 2 messages. }
+# The endpoint ```AlarmSetoff``` defines the topic to publish  Priority 2 messages as ```Alarm```.
 endpoint mb:SimpleTopicPublisher AlarmSetoff {
     host: "localhost",
     port: 5672,
     topicPattern: "Alarm"
 };
-documentation { Topic to publish  Priority 3 messages. }
+# The endpoint ```StatusAndMaintenance``` defines the topic to publish  Priority 3 messages as ```StatusAndMaintenance```.
 endpoint mb:SimpleTopicPublisher StatusAndMaintenance {
     host: "localhost",
     port: 5672,
     topicPattern: "StatusAndMaintenance"
 };
-documentation { Topic to publish  Priority 4 messages. }
+# The endpoint ```Research``` defines the topic to publish  Priority 4 messages as ```Research```.
 endpoint mb:SimpleTopicPublisher Research {
     host: "localhost",
     port: 5672,
     topicPattern: "Research"
 };
-documentation {
- Service to receive messages and do the selection process based on the priority and then publish the message to the related topic.
-}
+
+# The ```geoListener``` service is associated with the ```queueReceiver``` endpoint to receive messages and do the selection process based on the priority and then publish the message to the related topic.
+# If the message has a priority of 1 then publish the  message using ```NotifyAuthority``` endpoint.
+# If the message has a priority of 2 then publish the  message using ```AlarmSetoff``` endpoint.
+# If the message has a priority of 3 then publish the  message using ```StatusAndMaintenance``` endpoint.
+# If the message has a priority of 4 then publish the  message using ```Research``` endpoint.
 service<mb:Consumer> geoListener bind queueReceiver {
-    documentation { Resource handler for new messages from queue. }
     onMessage(endpoint consumer, mb:Message message) {
         int|error priority = message.getPriority() but {
             int i => i,

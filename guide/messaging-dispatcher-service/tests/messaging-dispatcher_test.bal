@@ -23,7 +23,7 @@ import ballerina/runtime;
 import ballerina/task;
 import ballerina/test;
 
-documentation { Topic to publish Priority 2 messages. }
+# The endpoint ```SetoffAlarm``` is to publish Priority 2 messages with the topicPattern: "```Alarm```", which are intend to dispatch to several endpoints later on.
 endpoint jms:SimpleTopicPublisher SetoffAlarm {
     initialContextFactory: "bmbInitialContextFactory",
     providerUrl: "amqp://admin:admin@carbon/carbon"
@@ -31,11 +31,16 @@ endpoint jms:SimpleTopicPublisher SetoffAlarm {
     acknowledgementMode: "AUTO_ACKNOWLEDGE",
     topicPattern: "Alarm"
 };
-documentation { Attributes associated with the service endpoint. }
+# The ```serviceEventListner``` is the endpoint which defined the attributes associated with the ```EventService``` endpoint.
+# The ```EventService``` is for reciving the messages on each endpoints defined in the message-dispatcher-service
+# The base pathe of the ```serviceEventListner``` endpoint via HTTP/1.1 is "/".
+# The resources path for the Alarm 1 is ```/alarm1```.
+# The resources path for the Alarm 2 is ```/alarm2```.
+# And the resources path for the Alarm 3 is ```/alarm3```.
+
 endpoint http:Listener serviceEventListner {
     port: 8080
 };
-documentation {  via HTTP/1.1. }
 @http:ServiceConfig {
     basePath: "/"
 }
@@ -44,7 +49,6 @@ service<http:Service> EventService bind serviceEventListner {
         methods: ["POST"], consumes: ["application/json"], produces: ["application/json"],
         path: "/alarm1"
     }
-    documentation { Resources for Alarm 1 }
     activity(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
@@ -57,7 +61,6 @@ service<http:Service> EventService bind serviceEventListner {
         methods: ["POST"],
         path: "/alarm2"
     }
-    documentation { Resource for Alarm 2}
     health(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
@@ -70,7 +73,6 @@ service<http:Service> EventService bind serviceEventListner {
         methods: ["POST"],
         path: "/alarm3"
     }
-    documentation { Resource for Alarm 3}
     maintanance(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
@@ -93,9 +95,9 @@ function afterFunc() {
 }
 @test:Config
 function testAlarm() {
-    //Need to create a git issue for this
+    messageSender();
 }
-function main(string... args) {
+function messageSender() {
     json requestMessage = { "AlarmStatus": "ON" };
     string messageText = requestMessage.toString();
     match (SetoffAlarm.createTextMessage(messageText)) {

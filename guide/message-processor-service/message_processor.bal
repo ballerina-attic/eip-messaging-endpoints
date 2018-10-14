@@ -19,26 +19,31 @@ import ballerina/io;
 import ballerina/log;
 import ballerina/mb;
 
-documentation { Define the message queue endpoint for sending newly processed new information messages. }
+# The endpoint ```queueProcessedQueue``` is the message queue endpoint for sending newly processed messages from the ```message-processor-service```.
 endpoint mb:SimpleQueueSender queueProcessedQueue {
     host: "localhost",
     port: 5672,
     queueName: "ProcessedQueue"
 };
-documentation { Attributes associated with the service endpoint. }
+# The endpoint ```httpListner``` which listen on port:```8080``` is associated with the ```MessageProcessingService``` service endpoint.
+# The base path for the ```MessageProcessingService``` which associated with ```httpListner``` via HTTP/1.1.
+# The resources path for reciving geo activities is ```/activity```
+# The resources path for reciving geo activities is ```/health```
+# The resources path for reciving geo activities is ```/maintenanc```
+# The resources path for reciving geo activities is ```/calibrate```
+# Each above resource paths consumes and produces messages of Content-Type: ```application/json```
+
 endpoint http:Listener httpListner {
     port: 8080
 };
-documentation {  via HTTP/1.1. }
 @http:ServiceConfig {
     basePath: "/"
 }
 service<http:Service> MessageProcessingService bind httpListner {
     @http:ResourceConfig {
-        methods: ["POST"], consumes: ["application/json"], produces: ["plain/text"],
+        methods: ["POST"], consumes: ["application/json"], produces: ["application/json"],
         path: "/activity"
     }
-    documentation { Resources for reciving geo activities captured from the sensor }
     activity(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
@@ -63,7 +68,6 @@ service<http:Service> MessageProcessingService bind httpListner {
         methods: ["POST"], consumes: ["application/json"], produces: ["application/json"],
         path: "/health"
     }
-    documentation { Resources for reciving geo activities captured from the sensor }
     health(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
@@ -75,7 +79,6 @@ service<http:Service> MessageProcessingService bind httpListner {
         methods: ["POST"], consumes: ["application/json"], produces: ["application/json"],
         path: "/maintenance"
     }
-    documentation { Resources for reciving geo activities captured from the sensor }
     maintenance(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
@@ -92,7 +95,6 @@ service<http:Service> MessageProcessingService bind httpListner {
         methods: ["POST"], consumes: ["application/json"], produces: ["application/json"],
         path: "/calibrate"
     }
-    documentation { Resources for reciving geo activities captured from the sensor }
     calibrate(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
