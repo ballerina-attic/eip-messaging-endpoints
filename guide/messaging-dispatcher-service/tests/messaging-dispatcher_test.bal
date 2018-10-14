@@ -37,7 +37,7 @@ endpoint http:Listener serviceEventListner {
     port: 8080
 };
 
-# The ```EventService``` is for reciving the messages on each endpoints defined in the message-dispatcher-service
+# The ```EventService``` is for receiving the messages on each endpoints defined in the message-dispatcher-service
 # The base pathe of the ```serviceEventListner``` endpoint via HTTP/1.1 is "/".
 # The resources path for the Alarm 1 is ```/alarm1```.
 # The resources path for the Alarm 2 is ```/alarm2```.

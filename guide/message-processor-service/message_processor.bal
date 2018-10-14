@@ -32,10 +32,10 @@ endpoint http:Listener httpListner {
 };
 
 # The base path for the ```MessageProcessingService``` which associated with ```httpListner``` via HTTP/1.1.
-# The resources path for reciving geo activities is ```/activity```
-# The resources path for reciving geo activities is ```/health```
-# The resources path for reciving geo activities is ```/maintenanc```
-# The resources path for reciving geo activities is ```/calibrate```
+# The resources path for receiving geo activities is ```/activity```
+# The resources path for receiving geo activities is ```/health```
+# The resources path for receiving geo activities is ```/maintenanc```
+# The resources path for receiving geo activities is ```/calibrate```
 # Each above resource paths consumes and produces messages of Content-Type: ```application/json```
 @http:ServiceConfig {
     basePath: "/"

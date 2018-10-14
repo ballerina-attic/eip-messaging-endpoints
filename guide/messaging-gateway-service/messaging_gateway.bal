@@ -53,7 +53,7 @@ endpoint http:Listener sensorEventListner {
 };
 
 # The base path of the ```SensorEventService``` service is ```/service``` via HTTP/1.1.
-# The resource path for reciving geo activities captured from the sensor is defined as ```/activity```.
+# The resource path for receiving geo activities captured from the sensor is defined as ```/activity```.
 # The resource path for checking the health of the EP of the sensor is defined as ```/health```
 # The resource path for invoking a service when the sensor needed mainteinance is defined as ```/maintenance```
 # The resource path for invoking a service when the sensor needed calibration is defined as ```/calibrate```
