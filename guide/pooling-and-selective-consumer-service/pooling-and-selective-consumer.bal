@@ -14,9 +14,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-import ballerina/mb;
-import ballerina/log;
 import ballerina/http;
+import ballerina/log;
+import ballerina/mb;
 
 # The endpoint ```queueReceiver``` is the queue receiver endpoint for the queue ```ProcessedQueue```.
 endpoint mb:SimpleQueueReceiver queueReceiver {
