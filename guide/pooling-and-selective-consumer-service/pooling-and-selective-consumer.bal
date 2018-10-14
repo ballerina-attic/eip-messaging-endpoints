@@ -65,7 +65,7 @@ service<mb:Consumer> geoListener bind queueReceiver {
             error e => e
         };
         string messageText = check message.getTextMessageContent();
-        log:printInfo("Message recived with the priority of: " + check priority);
+        log:printInfo("Message received with the priority of: " + check priority);
         if (priority == 1){
             mb:Message msg = check NotifyAuthority.createTextMessage(messageText);
             _ = NotifyAuthority->send(msg);

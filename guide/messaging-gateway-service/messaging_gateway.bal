@@ -57,7 +57,7 @@ endpoint http:Listener sensorEventListner {
 # The resource path for checking the health of the EP of the sensor is defined as ```/health```
 # The resource path for invoking a service when the sensor needed mainteinance is defined as ```/maintenance```
 # The resource path for invoking a service when the sensor needed calibration is defined as ```/calibrate```
-# The recived messages on each aforementioned resources paths will be forworded to each related message queues by the assoaciation of below queue senders.
+# The received messages on each aforementioned resources paths will be forworded to each related message queues by the assoaciation of below queue senders.
 # ```queuesensorGeoMessage```, ```queueHealthCheck```,  ```queueMaintenance```, and the ```queueCalibration```.
 @http:ServiceConfig {
     basePath: "/service"
@@ -75,7 +75,7 @@ service<http:Service> SensorEventService bind sensorEventListner {
         _ = queuesensorGeoMessage->send(message);
         res.setTextPayload("status: Sucessfull");
         _ = conn->respond(res);
-        log:printInfo("Message recived at /activity: " + msg + "status:forwarded");
+        log:printInfo("Message received at /activity: " + msg + "status:forwarded");
     }
     @http:ResourceConfig {
         methods: ["POST"],
@@ -89,7 +89,7 @@ service<http:Service> SensorEventService bind sensorEventListner {
         _ = queueHealthCheck->send(message);
         res.setTextPayload("status: Sucessfull");
         _ = conn->respond(res);
-        log:printInfo("Message recived at /health: " + msg + "status:forwarded");
+        log:printInfo("Message received at /health: " + msg + "status:forwarded");
     }
     @http:ResourceConfig {
         methods: ["POST"],
@@ -103,7 +103,7 @@ service<http:Service> SensorEventService bind sensorEventListner {
         _ = queueMaintenance->send(message);
         res.setTextPayload("status: Sucessfull");
         _ = conn->respond(res);
-        log:printInfo("Message recived at /maintenance: " + msg + "status:forwarded");
+        log:printInfo("Message received at /maintenance: " + msg + "status:forwarded");
     }
     @http:ResourceConfig {
         methods: ["POST"],
@@ -117,6 +117,6 @@ service<http:Service> SensorEventService bind sensorEventListner {
         _ = queueCalibration->send(message);
         res.setTextPayload("status: Sucessfull");
         _ = conn->respond(res);
-        log:printInfo("Message recived at /calibrate: " + msg + "status:forwarded");
+        log:printInfo("Message received at /calibrate: " + msg + "status:forwarded");
     }
 }

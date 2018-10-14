@@ -54,8 +54,8 @@ service<http:Service> EventService bind serviceEventListner {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
         string msg = requestMessage.toString();
-        log:printInfo("Message Recives at Alarm 1: " + msg);
-        res.setTextPayload("status: Recived");
+        log:printInfo("Message received at Alarm 1: " + msg);
+        res.setTextPayload("status: Received");
         _ = conn->respond(res);
     }
     @http:ResourceConfig {
@@ -66,8 +66,8 @@ service<http:Service> EventService bind serviceEventListner {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
         string msg = requestMessage.toString();
-        log:printInfo("Message Recives at Alarm 2: " + msg);
-        res.setTextPayload("status: Recived");
+        log:printInfo("Message received at Alarm 2: " + msg);
+        res.setTextPayload("status: Received");
         _ = conn->respond(res);
     }
     @http:ResourceConfig {
@@ -78,8 +78,8 @@ service<http:Service> EventService bind serviceEventListner {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
         string msg = requestMessage.toString();
-        log:printInfo("Message Recives at Alarm 3: " + msg);
-        res.setTextPayload("status: Recived");
+        log:printInfo("Message received at Alarm 3: " + msg);
+        res.setTextPayload("status: Received");
         _ = conn->respond(res);
     }
 }

@@ -48,7 +48,7 @@ service<http:Service> MessageProcessingService bind httpListner {
     activity(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
-        log:printInfo("Message resived at /activity: " + requestMessage.toString());
+        log:printInfo("Message received at /activity: " + requestMessage.toString());
         json responseMessage1 = { "Message": "Earth Quake of 10 Richter Scale at the loaction near Panama",
             "AlarmStatus":
             "ON", "DesasterRecoveryTeamStatus": "Dispatched" };
@@ -62,7 +62,7 @@ service<http:Service> MessageProcessingService bind httpListner {
         var p2 = message2.setPriority(2);
         log:printInfo("Notifying Authority and then set off alarms" + msg2);
         _ = queueProcessedQueue->send(message2);
-        res.setTextPayload("status: Recived and processed by Message Processor");
+        res.setTextPayload("status: Received and processed by Message Processor");
         _ = conn->respond(res);
     }
     @http:ResourceConfig {
@@ -72,8 +72,8 @@ service<http:Service> MessageProcessingService bind httpListner {
     health(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
-        log:printInfo("Message resived at /health: " + requestMessage.toString());
-        res.setTextPayload("status: Recived and processed by Message Processor");
+        log:printInfo("Message received at /health: " + requestMessage.toString());
+        res.setTextPayload("status: Received and processed by Message Processor");
         _ = conn->respond(res);
     }
     @http:ResourceConfig {
@@ -83,13 +83,13 @@ service<http:Service> MessageProcessingService bind httpListner {
     maintenance(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
-        log:printInfo("Message resived at /maintenance: " + requestMessage.toString());
+        log:printInfo("Message received at /maintenance: " + requestMessage.toString());
         json responseMessage = { "Maintenance": "Need to send a maintenance team to the sensor with SID 4338" };
         string msg = responseMessage.toString();
         mb:Message message = check queueProcessedQueue.createTextMessage(msg);
         var p = message.setPriority(3);
         _ = queueProcessedQueue->send(message);
-        res.setTextPayload("status: Recived and processed by Message Processor");
+        res.setTextPayload("status: Received and processed by Message Processor");
         _ = conn->respond(res);
     }
     @http:ResourceConfig {
@@ -99,13 +99,13 @@ service<http:Service> MessageProcessingService bind httpListner {
     calibrate(endpoint conn, http:Request req) {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
-        log:printInfo("Message resived at /calibrate: " + requestMessage.toString());
+        log:printInfo("Message received at /calibrate: " + requestMessage.toString());
         json responseMessage = { "DATA": "lots of data need to analyze" };
         string msg = responseMessage.toString();
         mb:Message message = check queueProcessedQueue.createTextMessage(msg);
         var p = message.setPriority(4);
         _ = queueProcessedQueue->send(message);
-        res.setTextPayload("status: Recived and processed by Message Processor");
+        res.setTextPayload("status: Received and processed by Message Processor");
         _ = conn->respond(res);
     }
 }

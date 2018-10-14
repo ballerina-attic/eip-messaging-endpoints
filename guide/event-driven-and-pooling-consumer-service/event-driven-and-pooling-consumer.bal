@@ -71,7 +71,7 @@ service<mb:Consumer> geoListener bind queueReceiverGeoActivities {
         json requestPayload = messageText;
         outRequest.setJsonPayload(untaint requestPayload);
         var resp = GeoActivityEP->post("/", outRequest);
-        log:printInfo("Message recived from queue GeoActivities: " + messageText + "status:forwarded to /activity");
+        log:printInfo("Message received from queue GeoActivities: " + messageText + "status:forwarded to /activity");
     }
 }
 # Service to receive messages to the SensorHealth message queue is ```SensorHealth``` , which listens to the ```queueReceiverHealth```
@@ -83,7 +83,7 @@ service<mb:Consumer> healthListener bind queueReceiverHealth {
         json requestPayload = messageText;
         outRequest.setJsonPayload(untaint requestPayload);
         var resp = HealthEP->post("/", outRequest);
-        log:printInfo("Message recived from queue SensorHealth: " + messageText + "status:forwarded to /health");
+        log:printInfo("Message received from queue SensorHealth: " + messageText + "status:forwarded to /health");
     }
 }
 # Service to receive messages to the Maintenance message queue ```Maintenance```, which listens to the ```queueReceiverMaintenance```
@@ -95,7 +95,7 @@ service<mb:Consumer> maintenanceListener bind queueReceiverMaintenance {
         json requestPayload = messageText;
         outRequest.setJsonPayload(untaint requestPayload);
         var resp = MaintenanceEP->post("/", outRequest);
-        log:printInfo("Message recived from queue Maintenance: " + messageText + "status:forwarded to /maintenance");
+        log:printInfo("Message received from queue Maintenance: " + messageText + "status:forwarded to /maintenance");
     }
 }
 # Service to receive messages to the Calibration message queue ```Calibration```, which listens to the ```queueReceiverCalibrate```
@@ -107,6 +107,6 @@ service<mb:Consumer> calibrateListener bind queueReceiverCalibrate {
         json requestPayload = messageText;
         outRequest.setJsonPayload(untaint requestPayload);
         var resp = CalibrateEP->post("/", outRequest);
-        log:printInfo("Message recived from queue Calibration: " + messageText + "status:forwarded to /calibrate");
+        log:printInfo("Message received from queue Calibration: " + messageText + "status:forwarded to /calibrate");
     }
 }
