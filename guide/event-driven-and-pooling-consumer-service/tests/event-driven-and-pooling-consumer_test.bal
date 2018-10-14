@@ -26,8 +26,8 @@ string requestmessage2;
 string requestmessage3;
 string requestmessage4;
 
-# The endpoint ```queuesensorGeoMessage``` define the message queue endpoint for sending geo activities captured from the sensor.
-endpoint mb:SimpleQueueSender queuesensorGeoMessage {
+# The endpoint ```queueGeoMessage``` define the message queue endpoint for sending geo activities captured from the sensor.
+endpoint mb:SimpleQueueSender queueGeoMessage {
     host: "localhost",
     port: 5672,
     queueName: "GeoActivities"
@@ -112,25 +112,25 @@ function messageSender() {
     json sampleRequest1 = { "ID": 27125088, "SID": 4344, "TIME_S": "1536423224", "TIME_E": "1536423584", "TYPE": "EQ",
         "C_DATA": "41.40338, 2.17403", "R_SCALE": 10 };
     string msg1 = sampleRequest1.toString();
-    mb:Message message1 = check queuesensorGeoMessage.createTextMessage(msg1);
-    _ = queuesensorGeoMessage->send(message1);
+    mb:Message message1 = check queueGeoMessage.createTextMessage(msg1);
+    _ = queueGeoMessage->send(message1);
     http:Request req2;
     json sampleRequest2 = { "ID": 67602894, "SID": 1781, "TIME_S": "1536596384", "STATUS": "1122" };
     string msg2 = sampleRequest2.toString();
-    mb:Message message2 = check queuesensorGeoMessage.createTextMessage(msg2);
+    mb:Message message2 = check queueGeoMessage.createTextMessage(msg2);
     _ = queueHealthCheck->send(message2);
     http:Request req3;
     json sampleRequest3 = { "ID": 88885089, "SID": 5848, "TIME_S": "1536578384", "DATA":
     "ROTC1234 module need to be replaced" };
     string msg3 = sampleRequest3.toString();
-    mb:Message message3 = check queuesensorGeoMessage.createTextMessage(msg3);
+    mb:Message message3 = check queueGeoMessage.createTextMessage(msg3);
     _ = queueMaintenance->send(message3);
     http:Request req4;
     json sampleRequest4 = { "ID": 54256677, "SID": 7098, "TIME_S": "1536599984", "DATA": "Sensor need to be calibrated"
     }
     ;
     string msg4 = sampleRequest4.toString();
-    mb:Message message4 = check queuesensorGeoMessage.createTextMessage(msg4);
+    mb:Message message4 = check queueGeoMessage.createTextMessage(msg4);
     _ = queueCalibration->send(message4);
 }
 @test:BeforeSuite

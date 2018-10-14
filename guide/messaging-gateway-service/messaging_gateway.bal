@@ -19,8 +19,8 @@ import ballerina/io;
 import ballerina/log;
 import ballerina/mb;
 
-# The ```queuesensorGeoMessage``` endpoint defines the message queue endpoint which associated with the queue ```GeoActivities``` for sending geo activities captured from the sensor.
-endpoint mb:SimpleQueueSender queuesensorGeoMessage {
+# The ```queueGeoMessage``` endpoint defines the message queue endpoint which associated with the queue ```GeoActivities``` for sending geo activities captured from the sensor.
+endpoint mb:SimpleQueueSender queueGeoMessage {
     host: "localhost",
     port: 5672,
     queueName: "GeoActivities"
@@ -58,7 +58,7 @@ endpoint http:Listener sensorEventListner {
 # The resource path for invoking a service when the sensor needed mainteinance is defined as ```/maintenance```
 # The resource path for invoking a service when the sensor needed calibration is defined as ```/calibrate```
 # The received messages on each aforementioned resources paths will be forworded to each related message queues by the assoaciation of below queue senders.
-# ```queuesensorGeoMessage```, ```queueHealthCheck```,  ```queueMaintenance```, and the ```queueCalibration```.
+# ```queueGeoMessage```, ```queueHealthCheck```,  ```queueMaintenance```, and the ```queueCalibration```.
 @http:ServiceConfig {
     basePath: "/service"
 }
@@ -71,8 +71,8 @@ service<http:Service> SensorEventService bind sensorEventListner {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
         string msg = requestMessage.toString();
-        mb:Message message = check queuesensorGeoMessage.createTextMessage(msg);
-        _ = queuesensorGeoMessage->send(message);
+        mb:Message message = check queueGeoMessage.createTextMessage(msg);
+        _ = queueGeoMessage->send(message);
         res.setTextPayload("status: Sucessfull");
         _ = conn->respond(res);
         log:printInfo("Message received at /activity: " + msg + "status:forwarded");
