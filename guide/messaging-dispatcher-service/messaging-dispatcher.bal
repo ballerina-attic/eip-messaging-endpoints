@@ -24,12 +24,15 @@ import ballerina/io;
 endpoint http:Client  alarm1 {
     url: "http://localhost:8080/alarm1"
 };
+
 endpoint http:Client  alarm2 {
     url: "http://localhost:8080/alarm2"
 };
+
 endpoint http:Client  alarm3 {
     url: "http://localhost:8080/alarm3"
 };
+
 # The endpoint ```subscriberSetAlarmOff``` which subscribed to the topicPattern: "```Alarm```", consumes the messages of that pattern.
 endpoint jms:SimpleTopicSubscriber subscriberSetAlarmOff {
     initialContextFactory: "bmbInitialContextFactory",
@@ -38,6 +41,7 @@ endpoint jms:SimpleTopicSubscriber subscriberSetAlarmOff {
     acknowledgementMode: "AUTO_ACKNOWLEDGE",
     topicPattern: "Alarm"
 };
+
 # The ```mbListener``` service associated with the ```subscriberSetAlarmOff``` topic-subscriber and dispatch the messages to each of the aforementioned three endpoints when a message received.
 service<mb:Consumer> mbListener bind subscriberSetAlarmOff {
     onMessage(endpoint consumer, mb:Message message) {

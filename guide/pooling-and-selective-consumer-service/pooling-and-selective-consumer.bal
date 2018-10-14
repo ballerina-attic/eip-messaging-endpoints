@@ -24,24 +24,28 @@ endpoint mb:SimpleQueueReceiver queueReceiver {
     port: 5672,
     queueName: "ProcessedQueue"
 };
+
 # The endpoint ```NotifyAuthority``` defines the topic to publish  Priority 1 messages as ```Authority```.
 endpoint mb:SimpleTopicPublisher NotifyAuthority {
     host: "localhost",
     port: 5672,
     topicPattern: "Authority"
 };
+
 # The endpoint ```AlarmSetoff``` defines the topic to publish  Priority 2 messages as ```Alarm```.
 endpoint mb:SimpleTopicPublisher AlarmSetoff {
     host: "localhost",
     port: 5672,
     topicPattern: "Alarm"
 };
+
 # The endpoint ```StatusAndMaintenance``` defines the topic to publish  Priority 3 messages as ```StatusAndMaintenance```.
 endpoint mb:SimpleTopicPublisher StatusAndMaintenance {
     host: "localhost",
     port: 5672,
     topicPattern: "StatusAndMaintenance"
 };
+
 # The endpoint ```Research``` defines the topic to publish  Priority 4 messages as ```Research```.
 endpoint mb:SimpleTopicPublisher Research {
     host: "localhost",

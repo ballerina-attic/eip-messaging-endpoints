@@ -24,36 +24,44 @@ endpoint mb:SimpleQueueReceiver queueReceiverGeoActivities {
     port: 5672,
     queueName: "GeoActivities"
 };
+
 endpoint http:Client  GeoActivityEP {
     url: "http://localhost:8080/activity"
 };
+
 # Queue receiver endpoint for health check messages of the sensors is ```queueReceiverHealth```
 endpoint mb:SimpleQueueReceiver queueReceiverHealth {
     host: "localhost",
     port: 5672,
     queueName: "SensorHealth"
 };
+
 endpoint http:Client  HealthEP {
     url: "http://localhost:8080/health"
 };
+
 # Queue receiver endpoint for maintenance messages of sensors is ```queueReceiverMaintenance```
 endpoint mb:SimpleQueueReceiver queueReceiverMaintenance {
     host: "localhost",
     port: 5672,
     queueName: "Maintenance"
 };
+
 endpoint http:Client  MaintenanceEP {
     url: "http://localhost:8080/maintenance"
 };
+
 # Queue receiver endpoint for calibration messages ```queueReceiverCalibrate```
 endpoint mb:SimpleQueueReceiver queueReceiverCalibrate {
     host: "localhost",
     port: 5672,
     queueName: "Calibration"
 };
+
 endpoint http:Client  CalibrateEP {
     url: "http://localhost:8080/calibrate"
 };
+
 # Service to receive messages to the new Geo-Activity messages queue is ```GeoActivities```, which listens to the ```queueReceiverGeoActivities```
 # The ```geoListener``` resource handler is for the new messages from queue ```GeoActivities```.
 service<mb:Consumer> geoListener bind queueReceiverGeoActivities {

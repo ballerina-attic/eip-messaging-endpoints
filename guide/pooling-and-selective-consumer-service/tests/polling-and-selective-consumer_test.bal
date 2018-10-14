@@ -28,23 +28,29 @@ endpoint mb:SimpleQueueSender queueSender {
     port: 5672,
     queueName: "ProcessedQueue"
 };
+
 # The endpoint ```subscriberSetAlarmOff``` subscribes to the topic-pattern of ```Alarm``` and consumes messages of that topic.
 endpoint mb:SimpleTopicSubscriber subscriberSetAlarmOff {
     topicPattern: "Alarm"
 };
+
 # The endpoint ```subscriberNotifyAuthority``` subscribes to the topic-pattern of ```Authority``` and consumes messages of that topic.
 endpoint mb:SimpleTopicSubscriber subscriberNotifyAuthority {
     topicPattern: "Authority"
 };
+
 # The endpoint ```subscriberMaintenance``` subscribes to the topic-pattern of ```StatusAndMaintenance``` and consumes messages of that topic.
 endpoint mb:SimpleTopicSubscriber subscriberMaintenance {
     topicPattern: "StatusAndMaintenance"
 };
+
 # The endpoint ```subscriberResearch``` subscribes to the topic-pattern of ```Research``` and consumes messages of that topic.
 endpoint mb:SimpleTopicSubscriber subscriberResearch {
     topicPattern: "Research"
 };
+
 string[4] messageTexts;
+
 # The service ```AuthorityListener``` assiciated with the ```subscriberNotifyAuthority``` topic-subscriber which consumes the messages of the Authority topic.
 service<mb:Consumer> AuthorityListener bind subscriberNotifyAuthority {
     onMessage(endpoint consumer, mb:Message message) {

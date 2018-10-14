@@ -31,16 +31,17 @@ endpoint jms:SimpleTopicPublisher SetoffAlarm {
     acknowledgementMode: "AUTO_ACKNOWLEDGE",
     topicPattern: "Alarm"
 };
+
 # The ```serviceEventListner``` is the endpoint which defined the attributes associated with the ```EventService``` endpoint.
+endpoint http:Listener serviceEventListner {
+    port: 8080
+};
+
 # The ```EventService``` is for reciving the messages on each endpoints defined in the message-dispatcher-service
 # The base pathe of the ```serviceEventListner``` endpoint via HTTP/1.1 is "/".
 # The resources path for the Alarm 1 is ```/alarm1```.
 # The resources path for the Alarm 2 is ```/alarm2```.
 # And the resources path for the Alarm 3 is ```/alarm3```.
-
-endpoint http:Listener serviceEventListner {
-    port: 8080
-};
 @http:ServiceConfig {
     basePath: "/"
 }

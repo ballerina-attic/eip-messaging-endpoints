@@ -25,18 +25,21 @@ endpoint mb:SimpleQueueSender queuesensorGeoMessage {
     port: 5672,
     queueName: "GeoActivities"
 };
+
 # The ```queueHealthCheck``` endpoint defines the message queue endpoint which associated with the queue ```SensorHealth``` to health check messages.
 endpoint mb:SimpleQueueSender queueHealthCheck {
     host: "localhost",
     port: 5672,
     queueName: "SensorHealth"
 };
+
 # The ```queueMaintenance``` define the message queue endpoint which associated with the queue ```Maintenance``` for maintenance messages.
 endpoint mb:SimpleQueueSender queueMaintenance {
     host: "localhost",
     port: 5672,
     queueName: "Maintenance"
 };
+
 # The ```queueCalibration``` define the message queue endpoint which associated with the queue ```Calibration``` for maintenance messages.
 endpoint mb:SimpleQueueSender queueCalibration {
     host: "localhost",
@@ -45,6 +48,10 @@ endpoint mb:SimpleQueueSender queueCalibration {
 };
 
 # The endpoint ```sensorEventListner``` associated with the service ```SensorEventService```. The port associated with the service is 9090.
+endpoint http:Listener sensorEventListner {
+    port: 9090
+};
+
 # The base path of the ```SensorEventService``` service is ```/service``` via HTTP/1.1.
 # The resource path for reciving geo activities captured from the sensor is defined as ```/activity```.
 # The resource path for checking the health of the EP of the sensor is defined as ```/health```
@@ -52,10 +59,6 @@ endpoint mb:SimpleQueueSender queueCalibration {
 # The resource path for invoking a service when the sensor needed calibration is defined as ```/calibrate```
 # The recived messages on each aforementioned resources paths will be forworded to each related message queues by the assoaciation of below queue senders.
 # ```queuesensorGeoMessage```, ```queueHealthCheck```,  ```queueMaintenance```, and the ```queueCalibration```.
-
-endpoint http:Listener sensorEventListner {
-    port: 9090
-};
 @http:ServiceConfig {
     basePath: "/service"
 }

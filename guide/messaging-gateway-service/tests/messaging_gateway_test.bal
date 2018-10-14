@@ -26,30 +26,35 @@ import ballerina/test;
 endpoint http:Client httpEndpoint {
     url: "http://localhost:9090/service"
 };
+
 # Queue receiver endpoint for new geo related messages is defined as ```queueReceiverGeoActivities```, which is associated with the queue ```GeoActivities```.
 endpoint mb:SimpleQueueReceiver queueReceiverGeoActivities {
     host: "localhost",
     port: 5672,
     queueName: "GeoActivities"
 };
+
 # Queue receiver endpoint for health check messages is defined as ```queueReceiverHealth```, which is associated with the queue ```SensorHealth```.
 endpoint mb:SimpleQueueReceiver queueReceiverHealth {
     host: "localhost",
     port: 5672,
     queueName: "SensorHealth"
 };
+
 # Queue receiver endpoint for maintenance messages is defined as ```queueReceiverMaintenance```, which is associated with the queue ```Maintenance```.
 endpoint mb:SimpleQueueReceiver queueReceiverMaintenance {
     host: "localhost",
     port: 5672,
     queueName: "Maintenance"
 };
+
 # Queue receiver endpoint for calibration messages is defined as ```queueReceiverCalibrate```, which is associated with the queue ```Calibration```.
 endpoint mb:SimpleQueueReceiver queueReceiverCalibrate {
     host: "localhost",
     port: 5672,
     queueName: "Calibration"
 };
+
 string[4] messageTexts;
 # Service to receive messages to the new Geo-Activity messages queue is ```GeoActivities```, which listens to the ```queueReceiverGeoActivities```
 # The ```geoListener``` resource handler is for the new messages from queue ```GeoActivities```.
@@ -58,6 +63,7 @@ service<mb:Consumer> geoListener bind queueReceiverGeoActivities {
         messageTexts[0] = untaint check message.getTextMessageContent();
     }
 }
+
 # Service to receive messages to the SensorHealth message queue is ```SensorHealth``` , which listens to the ```queueReceiverHealth```
 # The ```healthListener``` resource handler is for the new messages from queue ```SensorHealth```
 service<mb:Consumer> healthListener bind queueReceiverHealth {
@@ -65,6 +71,7 @@ service<mb:Consumer> healthListener bind queueReceiverHealth {
         messageTexts[1] = untaint check message.getTextMessageContent();
     }
 }
+
 # Service to receive messages to the Maintenance message queue ```Maintenance```, which listens to the ```queueReceiverMaintenance```
 # The ```maintenanceListener``` resource handler is for the new messages from queue ```Maintenance```
 service<mb:Consumer> maintenanceListener bind queueReceiverMaintenance {
@@ -72,6 +79,7 @@ service<mb:Consumer> maintenanceListener bind queueReceiverMaintenance {
         messageTexts[2] = untaint check message.getTextMessageContent();
     }
 }
+
 # Service to receive messages to the Calibration message queue ```Calibration```, which listens to the ```queueReceiverCalibrate```
 # The ```calibrateListener``` resource handler is for the new messages from queue ```Calibration```
 service<mb:Consumer> calibrateListener bind queueReceiverCalibrate {
@@ -79,6 +87,7 @@ service<mb:Consumer> calibrateListener bind queueReceiverCalibrate {
         messageTexts[3] = untaint check message.getTextMessageContent();
     }
 }
+
 # The function ```messageSender()``` sends the messages to ```httpEndpoint```.
 function messageSender() {
     http:Request activityReq;

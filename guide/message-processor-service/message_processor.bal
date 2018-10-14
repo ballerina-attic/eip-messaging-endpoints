@@ -25,17 +25,18 @@ endpoint mb:SimpleQueueSender queueProcessedQueue {
     port: 5672,
     queueName: "ProcessedQueue"
 };
+
 # The endpoint ```httpListner``` which listen on port:```8080``` is associated with the ```MessageProcessingService``` service endpoint.
+endpoint http:Listener httpListner {
+    port: 8080
+};
+
 # The base path for the ```MessageProcessingService``` which associated with ```httpListner``` via HTTP/1.1.
 # The resources path for reciving geo activities is ```/activity```
 # The resources path for reciving geo activities is ```/health```
 # The resources path for reciving geo activities is ```/maintenanc```
 # The resources path for reciving geo activities is ```/calibrate```
 # Each above resource paths consumes and produces messages of Content-Type: ```application/json```
-
-endpoint http:Listener httpListner {
-    port: 8080
-};
 @http:ServiceConfig {
     basePath: "/"
 }
