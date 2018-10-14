@@ -61,7 +61,7 @@ service<http:Service> MessageProcessingService bind httpListner {
         string msg2 = responseMessage2.toString();
         mb:Message message2 = check queueProcessedQueue.createTextMessage(msg2);
         var p2 = message2.setPriority(2);
-        log:printInfo("Notifying Authority and then set off alarms" + msg2);
+        log:printInfo("Notifying authority and then set off alarms" + msg2);
         _ = queueProcessedQueue->send(message2);
         res.setTextPayload("status: Received and processed by Message Processor");
         _ = conn->respond(res);
