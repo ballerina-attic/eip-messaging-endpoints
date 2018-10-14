@@ -135,7 +135,6 @@ function testSetAlarmOff() {
     json requestMessage2 = { "AlarmStatus": "ON" };
     string msg2 = requestMessage2.toString();
     string expectedResponse = msg2;
-    //log:printInfo("Message 2 is :" + messageTexts[1]);
     test:assertEquals(messageTexts[1], expectedResponse, msg =
         "polling-and-selective-consumer-service failed at testSetAlarmOff");
 }
@@ -144,7 +143,6 @@ function testMaintenance() {
     json requestMessage3 = { "Maintenance": "Need to send a maintenance team to the sensor with SID 4338" };
     string msg3 = requestMessage3.toString();
     string expectedResponse = msg3;
-    //log:printInfo("Message 3 is :" + messageTexts[2]);
     test:assertEquals(messageTexts[2], expectedResponse, msg =
         "polling-and-selective-consumer-service failed at testMaintenance");
 }
@@ -153,7 +151,6 @@ function testResearch() {
     json requestMessage4 = { "DATA": "lots of data need to analyze" };
     string msg4 = requestMessage4.toString();
     string expectedResponse = msg4;
-    //log:printInfo("Message 4 is :" + messageTexts[3]);
     test:assertEquals(messageTexts[3], expectedResponse, msg =
         "polling-and-selective-consumer-service failed at testResearch");
 }
