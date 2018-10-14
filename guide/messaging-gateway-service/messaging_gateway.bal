@@ -64,7 +64,9 @@ endpoint http:Listener sensorEventListner {
 }
 service<http:Service> SensorEventService bind sensorEventListner {
     @http:ResourceConfig {
-        methods: ["POST"], consumes: ["application/json"], produces: ["plain/text"],
+        methods: ["POST"],
+        consumes: ["application/json"],
+        produces: ["plain/text"],
         path: "/activity"
     }
     activity(endpoint conn, http:Request req) {

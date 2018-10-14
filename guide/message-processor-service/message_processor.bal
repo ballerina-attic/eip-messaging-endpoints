@@ -42,7 +42,9 @@ endpoint http:Listener httpListner {
 }
 service<http:Service> MessageProcessingService bind httpListner {
     @http:ResourceConfig {
-        methods: ["POST"], consumes: ["application/json"], produces: ["application/json"],
+        methods: ["POST"],
+        consumes: ["application/json"],
+        produces: ["application/json"],
         path: "/activity"
     }
     activity(endpoint conn, http:Request req) {
@@ -66,7 +68,9 @@ service<http:Service> MessageProcessingService bind httpListner {
         _ = conn->respond(res);
     }
     @http:ResourceConfig {
-        methods: ["POST"], consumes: ["application/json"], produces: ["application/json"],
+        methods: ["POST"],
+        consumes: ["application/json"],
+        produces: ["application/json"],
         path: "/health"
     }
     health(endpoint conn, http:Request req) {
@@ -77,7 +81,9 @@ service<http:Service> MessageProcessingService bind httpListner {
         _ = conn->respond(res);
     }
     @http:ResourceConfig {
-        methods: ["POST"], consumes: ["application/json"], produces: ["application/json"],
+        methods: ["POST"],
+        consumes: ["application/json"],
+        produces: ["application/json"],
         path: "/maintenance"
     }
     maintenance(endpoint conn, http:Request req) {
@@ -93,7 +99,9 @@ service<http:Service> MessageProcessingService bind httpListner {
         _ = conn->respond(res);
     }
     @http:ResourceConfig {
-        methods: ["POST"], consumes: ["application/json"], produces: ["application/json"],
+        methods: ["POST"],
+        consumes: ["application/json"],
+        produces: ["application/json"],
         path: "/calibrate"
     }
     calibrate(endpoint conn, http:Request req) {

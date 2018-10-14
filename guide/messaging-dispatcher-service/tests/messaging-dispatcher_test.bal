@@ -47,7 +47,9 @@ endpoint http:Listener serviceEventListner {
 }
 service<http:Service> EventService bind serviceEventListner {
     @http:ResourceConfig {
-        methods: ["POST"], consumes: ["application/json"], produces: ["application/json"],
+        methods: ["POST"],
+        consumes: ["application/json"],
+        produces: ["application/json"],
         path: "/alarm1"
     }
     activity(endpoint conn, http:Request req) {
