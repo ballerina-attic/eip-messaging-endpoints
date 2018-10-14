@@ -75,7 +75,7 @@ service<http:Service> SensorEventService bind sensorEventListner {
         string msg = requestMessage.toString();
         mb:Message message = check queueGeoMessage.createTextMessage(msg);
         _ = queueGeoMessage->send(message);
-        res.setTextPayload("status: Sucessfull");
+        res.setTextPayload("status: successful");
         _ = conn->respond(res);
         log:printInfo("Message received at /activity: " + msg + "status:forwarded");
     }
@@ -89,7 +89,7 @@ service<http:Service> SensorEventService bind sensorEventListner {
         string msg = requestMessage.toString();
         mb:Message message = check queueHealthCheck.createTextMessage(msg);
         _ = queueHealthCheck->send(message);
-        res.setTextPayload("status: Sucessfull");
+        res.setTextPayload("status: successful");
         _ = conn->respond(res);
         log:printInfo("Message received at /health: " + msg + "status:forwarded");
     }
@@ -103,7 +103,7 @@ service<http:Service> SensorEventService bind sensorEventListner {
         string msg = requestMessage.toString();
         mb:Message message = check queueMaintenance.createTextMessage(msg);
         _ = queueMaintenance->send(message);
-        res.setTextPayload("status: Sucessfull");
+        res.setTextPayload("status: successful");
         _ = conn->respond(res);
         log:printInfo("Message received at /maintenance: " + msg + "status:forwarded");
     }
@@ -117,7 +117,7 @@ service<http:Service> SensorEventService bind sensorEventListner {
         string msg = requestMessage.toString();
         mb:Message message = check queueCalibration.createTextMessage(msg);
         _ = queueCalibration->send(message);
-        res.setTextPayload("status: Sucessfull");
+        res.setTextPayload("status: successful");
         _ = conn->respond(res);
         log:printInfo("Message received at /calibrate: " + msg + "status:forwarded");
     }
