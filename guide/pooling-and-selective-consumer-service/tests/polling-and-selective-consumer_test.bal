@@ -96,7 +96,7 @@ function messagePublisher() {
     var priorityThree = priorityThreeMessage.setPriority(3);
     _ = queueSender->send(priorityThreeMessage);
     runtime:sleep(5000);
-    json priorityFourJson = { "DATA": "lots of data need to analyze" };
+    json priorityFourJson = { "data store": "IUBA01IBMSTORE-0221", "entry no": "145QAZYNRFV11", "task": "ANALYZE", "priority": "IMMEDIATE" };
     string priorityFourText = priorityFourJson.toString();
     mb:Message priorityFourMessage = check queueSender.createTextMessage(priorityFourText);
     var priorityFour = priorityFourMessage.setPriority(4);

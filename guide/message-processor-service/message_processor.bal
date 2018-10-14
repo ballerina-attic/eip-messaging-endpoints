@@ -107,7 +107,7 @@ service<http:Service> MessageProcessingService bind httpListner {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
         log:printInfo("Message received at /calibrate: " + requestMessage.toString());
-        json responseMessage = { "DATA": "lots of data need to analyze" };
+        json responseMessage = { "data store": "IUBA01IBMSTORE-0221", "entry no": "145QAZYNRFV11", "task": "ANALYZE", "priority": "IMMEDIATE" };
         string msg = responseMessage.toString();
         mb:Message message = check queueProcessedQueue.createTextMessage(msg);
         var p = message.setPriority(4);
