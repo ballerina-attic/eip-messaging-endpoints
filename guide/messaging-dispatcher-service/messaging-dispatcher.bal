@@ -36,8 +36,7 @@ endpoint http:Client  alarm3 {
 # The endpoint ```subscriberSetAlarmOff``` which subscribed to the topicPattern: "```Alarm```", consumes the messages of that pattern.
 endpoint jms:SimpleTopicSubscriber subscriberSetAlarmOff {
     initialContextFactory: "bmbInitialContextFactory",
-    providerUrl: "amqp://admin:admin@carbon/carbon?"
-        + "brokerlist='tcp://localhost:5672'",
+    providerUrl: "amqp://admin:admin@carbon/carbon?" + "brokerlist='tcp://localhost:5672'",
     acknowledgementMode: "AUTO_ACKNOWLEDGE",
     topicPattern: "Alarm"
 };

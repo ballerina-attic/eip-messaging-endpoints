@@ -26,8 +26,7 @@ import ballerina/test;
 # The endpoint ```SetoffAlarm``` is to publish Priority 2 messages with the topicPattern: "```Alarm```", which are intend to dispatch to several endpoints later on.
 endpoint jms:SimpleTopicPublisher SetoffAlarm {
     initialContextFactory: "bmbInitialContextFactory",
-    providerUrl: "amqp://admin:admin@carbon/carbon"
-        + "?brokerlist='tcp://localhost:5672'",
+    providerUrl: "amqp://admin:admin@carbon/carbon" + "?brokerlist='tcp://localhost:5672'",
     acknowledgementMode: "AUTO_ACKNOWLEDGE",
     topicPattern: "Alarm"
 };
