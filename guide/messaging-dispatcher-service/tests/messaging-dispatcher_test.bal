@@ -108,8 +108,7 @@ function messageSender() {
         }
         jms:Message msg => {
             SetoffAlarm->send(msg) but {
-                error e => log:printError("Error occurred while sending"
-                        + "message", err = e)
+                error e => log:printError("Error occurred while sending" + "message", err = e)
             };
         }
     }
