@@ -115,15 +115,18 @@ function messageSender() {
     string sensorText = sensorJson.toString();
     mb:Message sensorMessage = check queueGeoMessage.createTextMessage(sensorText);
     _ = queueGeoMessage->send(sensorMessage);
+
     json healthJson = { "ID": 67602894, "SID": 1781, "TIME_S": "1536596384", "STATUS": "1122" };
     string healthText = healthJson.toString();
     mb:Message healthMessage = check queueGeoMessage.createTextMessage(healthText);
     _ = queueHealthCheck->send(healthMessage);
+
     json maintenanceJson = { "ID": 88885089, "SID": 5848, "TIME_S": "1536578384", "DATA":
     "ROTC1234 module need to be replaced" };
     string maintenanceText = maintenanceJson.toString();
     mb:Message maintenanceMessage = check queueGeoMessage.createTextMessage(maintenanceText);
     _ = queueMaintenance->send(maintenanceMessage);
+
     json calibJson = { "ID": 54256677, "SID": 7098, "TIME_S": "1536599984", "DATA": "Sensor need to be calibrated" };
     string calibText = calibJson.toString();
     mb:Message calibMessage = check queueGeoMessage.createTextMessage(calibText);

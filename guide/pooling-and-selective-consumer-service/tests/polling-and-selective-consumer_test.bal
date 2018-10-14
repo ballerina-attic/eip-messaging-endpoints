@@ -84,18 +84,21 @@ function messagePublisher() {
     var priorityOne = priorityOneMessage.setPriority(1);
     _ = queueSender->send(priorityOneMessage);
     runtime:sleep(5000);
+
     json priorityTwoJson = { "AlarmStatus": "ON" };
     string priorityTwoText = priorityTwoJson.toString();
     mb:Message priorityTwoMessage = check queueSender.createTextMessage(priorityTwoText);
     var priorityTwo = priorityTwoMessage.setPriority(2);
     _ = queueSender->send(priorityTwoMessage);
     runtime:sleep(5000);
+
     json priorityThreeJson = { "Maintenance": "Need to send a maintenance team to the sensor with SID 4338" };
     string priorityThreeText = priorityThreeJson.toString();
     mb:Message priorityThreeMessage = check queueSender.createTextMessage(priorityThreeText);
     var priorityThree = priorityThreeMessage.setPriority(3);
     _ = queueSender->send(priorityThreeMessage);
     runtime:sleep(5000);
+
     json priorityFourJson = { "data store": "IUBA01IBMSTORE-0221", "entry no": "145QAZYNRFV11", "task": "ANALYZE", "priority": "IMMEDIATE" };
     string priorityFourText = priorityFourJson.toString();
     mb:Message priorityFourMessage = check queueSender.createTextMessage(priorityFourText);
