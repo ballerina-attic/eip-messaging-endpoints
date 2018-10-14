@@ -53,9 +53,7 @@ service<http:Service> EventService bind serviceEventListner {
     }
     activity(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        string msg = requestMessage.toString();
-        log:printInfo("Message received at Alarm 1: " + msg);
+        log:printInfo("Message received at Alarm 1: " + check req.getTextPayload());
         res.setTextPayload("status: Received");
         _ = conn->respond(res);
     }
@@ -65,9 +63,7 @@ service<http:Service> EventService bind serviceEventListner {
     }
     health(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        string msg = requestMessage.toString();
-        log:printInfo("Message received at Alarm 2: " + msg);
+        log:printInfo("Message received at Alarm 2: " + check req.getTextPayload());
         res.setTextPayload("status: Received");
         _ = conn->respond(res);
     }
@@ -77,9 +73,7 @@ service<http:Service> EventService bind serviceEventListner {
     }
     maintanance(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        string msg = requestMessage.toString();
-        log:printInfo("Message received at Alarm 3: " + msg);
+        log:printInfo("Message received at Alarm 3: " + check req.getTextPayload());
         res.setTextPayload("status: Received");
         _ = conn->respond(res);
     }
@@ -101,8 +95,7 @@ function testAlarm() {
 }
 function messageSender() {
     json requestMessage = { "AlarmStatus": "ON" };
-    string messageText = requestMessage.toString();
-    match (SetoffAlarm.createTextMessage(messageText)) {
+    match (SetoffAlarm.createTextMessage(requestMessage.toString())) {
         error e => {
             log:printError("Error occurred while creating message", err = e);
         }

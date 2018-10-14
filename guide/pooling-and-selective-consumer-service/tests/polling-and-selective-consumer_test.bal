@@ -79,8 +79,7 @@ service<mb:Consumer> ResearchListener bind subscriberResearch {
 function messagePublisher() {
     json priorityOneJson = { "Message": "An earthquake of magnitude 10 on the Richter scale near Panama", "AlarmStatus": "ON",
         "DisasterRecoveryTeamStatus": "Dispatched" };
-    string priorityOneText = priorityOneJson.toString();
-    mb:Message priorityOneMessage = check queueSender.createTextMessage(priorityOneText);
+    mb:Message priorityOneMessage = check queueSender.createTextMessage(priorityOneJson.toString());
     var priorityOne = priorityOneMessage.setPriority(1);
     _ = queueSender->send(priorityOneMessage) but {
         error e => log:printError("Error sending message", err = e)
@@ -88,8 +87,7 @@ function messagePublisher() {
     runtime:sleep(5000);
 
     json priorityTwoJson = { "AlarmStatus": "ON" };
-    string priorityTwoText = priorityTwoJson.toString();
-    mb:Message priorityTwoMessage = check queueSender.createTextMessage(priorityTwoText);
+    mb:Message priorityTwoMessage = check queueSender.createTextMessage(priorityTwoJson.toString());
     var priorityTwo = priorityTwoMessage.setPriority(2);
     _ = queueSender->send(priorityTwoMessage) but {
         error e => log:printError("Error sending message", err = e)
@@ -97,8 +95,7 @@ function messagePublisher() {
     runtime:sleep(5000);
 
     json priorityThreeJson = { "Maintenance": "Need to send a maintenance team to the sensor with SID 4338" };
-    string priorityThreeText = priorityThreeJson.toString();
-    mb:Message priorityThreeMessage = check queueSender.createTextMessage(priorityThreeText);
+    mb:Message priorityThreeMessage = check queueSender.createTextMessage(priorityThreeJson.toString());
     var priorityThree = priorityThreeMessage.setPriority(3);
     _ = queueSender->send(priorityThreeMessage) but {
         error e => log:printError("Error sending message", err = e)
@@ -106,8 +103,7 @@ function messagePublisher() {
     runtime:sleep(5000);
 
     json priorityFourJson = { "data store": "IUBA01IBMSTORE-0221", "entry no": "145QAZYNRFV11", "task": "ANALYZE", "priority": "IMMEDIATE" };
-    string priorityFourText = priorityFourJson.toString();
-    mb:Message priorityFourMessage = check queueSender.createTextMessage(priorityFourText);
+    mb:Message priorityFourMessage = check queueSender.createTextMessage(priorityFourJson.toString());
     var priorityFour = priorityFourMessage.setPriority(4);
     _ = queueSender->send(priorityFourMessage) but {
         error e => log:printError("Error sending message", err = e)

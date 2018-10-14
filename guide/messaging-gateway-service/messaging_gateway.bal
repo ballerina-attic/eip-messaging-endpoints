@@ -71,8 +71,7 @@ service<http:Service> SensorEventService bind sensorEventListner {
     }
     activity(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        string msg = requestMessage.toString();
+        string msg = check req.getTextPayload();
         mb:Message message = check queueGeoMessage.createTextMessage(msg);
         _ = queueGeoMessage->send(message) but {
             error e => log:printError("Error sending message", err = e)
@@ -87,8 +86,7 @@ service<http:Service> SensorEventService bind sensorEventListner {
     }
     health(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        string msg = requestMessage.toString();
+        string msg = check req.getTextPayload();
         mb:Message message = check queueHealthCheck.createTextMessage(msg);
         _ = queueHealthCheck->send(message) but {
             error e => log:printError("Error sending message", err = e)
@@ -103,8 +101,7 @@ service<http:Service> SensorEventService bind sensorEventListner {
     }
     maintanance(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        string msg = requestMessage.toString();
+        string msg = check req.getTextPayload();
         mb:Message message = check queueMaintenance.createTextMessage(msg);
         _ = queueMaintenance->send(message) but {
             error e => log:printError("Error sending message", err = e)
@@ -119,8 +116,7 @@ service<http:Service> SensorEventService bind sensorEventListner {
     }
     calibrate(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        string msg = requestMessage.toString();
+        string msg = check req.getTextPayload();
         mb:Message message = check queueCalibration.createTextMessage(msg);
         _ = queueCalibration->send(message) but {
             error e => log:printError("Error sending message", err = e)

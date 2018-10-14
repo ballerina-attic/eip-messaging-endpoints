@@ -49,8 +49,7 @@ service<http:Service> MessageProcessingService bind httpListner {
     }
     activity(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        log:printInfo("Message received at /activity: " + requestMessage.toString());
+        log:printInfo("Message received at /activity: " + check req.getTextPayload());
         json processedGeoJson = { "Message": "An earthquake of magnitude 10 on the Richter scale near Panama",
             "AlarmStatus": "ON", "DisasterRecoveryTeamStatus": "Dispatched" };
         mb:Message processedGeoMessage = check queueProcessedQueue.createTextMessage(processedGeoJson.toString());
@@ -75,8 +74,7 @@ service<http:Service> MessageProcessingService bind httpListner {
     }
     health(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        log:printInfo("Message received at /health: " + requestMessage.toString());
+        log:printInfo("Message received at /health: " + check req.getTextPayload());
         res.setTextPayload("status: Received and processed by Message Processor");
         _ = conn->respond(res);
     }
@@ -90,7 +88,7 @@ service<http:Service> MessageProcessingService bind httpListner {
         http:Response res = new;
         log:printInfo("Message received at /maintenance: " + check req.getTextPayload());
         json responseMessage = { "Maintenance": "Need to send a maintenance team to the sensor with SID 4338" };
-        mb:Message message = check queueProcessedQueue.createTextMessage(esponseMessage.toString());
+        mb:Message message = check queueProcessedQueue.createTextMessage(responseMessage.toString());
         var p = message.setPriority(3);
         _ = queueProcessedQueue->send(message) but {
             error e => log:printError("Error sending message", err = e)

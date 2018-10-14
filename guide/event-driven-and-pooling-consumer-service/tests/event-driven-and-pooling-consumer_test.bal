@@ -16,15 +16,16 @@
 
 import ballerina/http;
 import ballerina/io;
+import ballerina/log;
 import ballerina/mb;
 import ballerina/runtime;
 import ballerina/task;
 import ballerina/test;
 
-string requestmessage1;
-string requestmessage2;
-string requestmessage3;
-string requestmessage4;
+string activitymessage;
+string healthMessage;
+string maintenanceMessage;
+string calibMessage;
 
 # The endpoint ```queueGeoMessage``` define the message queue endpoint for sending geo activities captured from the sensor.
 endpoint mb:SimpleQueueSender queueGeoMessage {
@@ -76,8 +77,7 @@ service<http:Service> SensorEventService bind sensorEventListner {
     }
 
     activity(endpoint conn, http:Request req) {
-        json requestMessage = check req.getJsonPayload();
-        requestmessage1 = untaint requestMessage.toString();
+        activitymessage = untaint check req.getTextPayload();
     }
     @http:ResourceConfig {
         methods: ["POST"],
@@ -85,17 +85,16 @@ service<http:Service> SensorEventService bind sensorEventListner {
     }
     health(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        requestmessage2 = untaint requestMessage.toString();
+        healthMessage = untaint check req.getTextPayload();
+        res.setPayload("Status Received");
     }
     @http:ResourceConfig {
         methods: ["POST"],
         path: "/maintenance"
     }
-    maintanance(endpoint conn, http:Request req) {
+    maintenance(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        requestmessage3 = untaint requestMessage.toString();
+        maintenanceMessage = untaint check req.getTextPayload();
         res.setPayload("Ack - maintenance team on the way");
     }
     @http:ResourceConfig {
@@ -104,39 +103,34 @@ service<http:Service> SensorEventService bind sensorEventListner {
     }
     calibrate(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        requestmessage4 = untaint requestMessage.toString();
+        calibMessage = untaint check req.getTextPayload();
         res.setPayload("Ack - Calibration scheduled");
     }
 }
 function messageSender() {
     json sensorJson = { "ID": 27125088, "SID": 4344, "TIME_S": "1536423224", "TIME_E": "1536423584", "TYPE": "EQ",
         "C_DATA": "41.40338, 2.17403", "R_SCALE": 10 };
-    string sensorText = sensorJson.toString();
-    mb:Message sensorMessage = check queueGeoMessage.createTextMessage(sensorText);
-    _ = queueGeoMessage->send(sensorMessage) but {
+    mb:Message sensorMsg = check queueGeoMessage.createTextMessage(sensorJson.toString());
+    _ = queueGeoMessage->send(sensorMsg) but {
         error e => log:printError("Error sending message", err = e)
     };
 
     json healthJson = { "ID": 67602894, "SID": 1781, "TIME_S": "1536596384", "STATUS": "1122" };
-    string healthText = healthJson.toString();
-    mb:Message healthMessage = check queueGeoMessage.createTextMessage(healthText);
-    _ = queueHealthCheck->send(healthMessage) but {
+    mb:Message healthMsg = check queueGeoMessage.createTextMessage(healthJson.toString());
+    _ = queueHealthCheck->send(healthMsg) but {
         error e => log:printError("Error sending message", err = e)
     };
 
     json maintenanceJson = { "ID": 88885089, "SID": 5848, "TIME_S": "1536578384", "DATA":
     "ROTC1234 module need to be replaced" };
-    string maintenanceText = maintenanceJson.toString();
-    mb:Message maintenanceMessage = check queueGeoMessage.createTextMessage(maintenanceText);
-    _ = queueMaintenance->send(maintenanceMessage) but {
+    mb:Message maintenanceMsg = check queueGeoMessage.createTextMessage(maintenanceJson.toString());
+    _ = queueMaintenance->send(maintenanceMsg) but {
         error e => log:printError("Error sending message", err = e)
     };
 
     json calibJson = { "ID": 54256677, "SID": 7098, "TIME_S": "1536599984", "DATA": "Sensor need to be calibrated" };
-    string calibText = calibJson.toString();
-    mb:Message calibMessage = check queueGeoMessage.createTextMessage(calibText);
-    _ = queueCalibration->send(calibMessage) but {
+    mb:Message calibMsg = check queueGeoMessage.createTextMessage(calibJson.toString());
+    _ = queueCalibration->send(calibMsg) but {
         error e => log:printError("Error sending message", err = e)
     };
 }
@@ -158,14 +152,14 @@ function testGeoActivitiesEP() {
     json sampleRequest = { "ID": 27125088, "SID": 4344, "TIME_S": "1536423224", "TIME_E": "1536423584", "TYPE": "EQ",
         "C_DATA": "41.40338, 2.17403", "R_SCALE": 10 };
     string expectedResponse = sampleRequest.toString();
-    test:assertEquals(requestmessage1, expectedResponse, msg =
+    test:assertEquals(activitymessage, expectedResponse, msg =
         "event-driven-and-pooling-consumer-service failed at testGeoActivties EndPoint");
 }
 @test:Config
 function testSensorHealthEP() {
     json sampleRequest = { "ID": 67602894, "SID": 1781, "TIME_S": "1536596384", "STATUS": "1122" };
     string expectedResponse = sampleRequest.toString();
-    test:assertEquals(requestmessage2, expectedResponse, msg =
+    test:assertEquals(healthMessage, expectedResponse, msg =
         "event-driven-and-pooling-consumer-service failed at testSesorHealth EndPoint");
 }
 @test:Config
@@ -173,7 +167,7 @@ function testMaintenanceEP() {
     json sampleRequest = { "ID": 88885089, "SID": 5848, "TIME_S": "1536578384", "DATA":
     "ROTC1234 module need to be replaced" };
     string expectedResponse = sampleRequest.toString();
-    test:assertEquals(requestmessage3, expectedResponse, msg =
+    test:assertEquals(maintenanceMessage, expectedResponse, msg =
         "event-driven-and-pooling-consumer-service failed at testMaintenance EndPoint");
 }
 @test:Config
@@ -181,6 +175,6 @@ function testCalibrationEP() {
     json sampleRequest = { "ID": 54256677, "SID": 7098, "TIME_S": "1536599984", "DATA": "Sensor need to be calibrated" }
     ;
     string expectedResponse = sampleRequest.toString();
-    test:assertEquals(requestmessage4, expectedResponse, msg =
+    test:assertEquals(calibMessage, expectedResponse, msg =
         "event-driven-and-pooling-consumer-service failed at testCalibration EndPoint");
 }

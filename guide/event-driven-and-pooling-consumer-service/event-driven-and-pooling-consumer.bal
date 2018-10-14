@@ -67,11 +67,9 @@ endpoint http:Client  CalibrateEP {
 service<mb:Consumer> geoListener bind queueReceiverGeoActivities {
     onMessage(endpoint consumer, mb:Message message) {
         http:Request outRequest;
-        string messageText = check message.getTextMessageContent();
-        json requestPayload = messageText;
-        outRequest.setJsonPayload(untaint requestPayload);
+        outRequest.setJsonPayload(untaint check message.getTextMessageContent());
         var resp = GeoActivityEP->post("/", outRequest);
-        log:printInfo("Message received from queue GeoActivities: " + messageText + "status:forwarded to /activity");
+        log:printInfo("Message received from queue GeoActivities: " + check message.getTextMessageContent() + "status:forwarded to /activity");
     }
 }
 # Service to receive messages to the SensorHealth message queue is ```SensorHealth``` , which listens to the ```queueReceiverHealth```
@@ -79,11 +77,9 @@ service<mb:Consumer> geoListener bind queueReceiverGeoActivities {
 service<mb:Consumer> healthListener bind queueReceiverHealth {
     onMessage(endpoint consumer, mb:Message message) {
         http:Request outRequest;
-        string messageText = check message.getTextMessageContent();
-        json requestPayload = messageText;
-        outRequest.setJsonPayload(untaint requestPayload);
+        outRequest.setJsonPayload(untaint check message.getTextMessageContent());
         var resp = HealthEP->post("/", outRequest);
-        log:printInfo("Message received from queue SensorHealth: " + messageText + "status:forwarded to /health");
+        log:printInfo("Message received from queue SensorHealth: " + message.getTextMessageContent() + "status:forwarded to /health");
     }
 }
 # Service to receive messages to the Maintenance message queue ```Maintenance```, which listens to the ```queueReceiverMaintenance```
@@ -91,11 +87,9 @@ service<mb:Consumer> healthListener bind queueReceiverHealth {
 service<mb:Consumer> maintenanceListener bind queueReceiverMaintenance {
     onMessage(endpoint consumer, mb:Message message) {
         http:Request outRequest;
-        string messageText = check message.getTextMessageContent();
-        json requestPayload = messageText;
-        outRequest.setJsonPayload(untaint requestPayload);
+        outRequest.setJsonPayload(untaint check message.getTextMessageContent());
         var resp = MaintenanceEP->post("/", outRequest);
-        log:printInfo("Message received from queue Maintenance: " + messageText + "status:forwarded to /maintenance");
+        log:printInfo("Message received from queue Maintenance: " + check message.getTextMessageContent() + "status:forwarded to /maintenance");
     }
 }
 # Service to receive messages to the Calibration message queue ```Calibration```, which listens to the ```queueReceiverCalibrate```
@@ -103,10 +97,8 @@ service<mb:Consumer> maintenanceListener bind queueReceiverMaintenance {
 service<mb:Consumer> calibrateListener bind queueReceiverCalibrate {
     onMessage(endpoint consumer, mb:Message message) {
         http:Request outRequest;
-        string messageText = check message.getTextMessageContent();
-        json requestPayload = messageText;
-        outRequest.setJsonPayload(untaint requestPayload);
+        outRequest.setJsonPayload(untaint check message.getTextMessageContent());
         var resp = CalibrateEP->post("/", outRequest);
-        log:printInfo("Message received from queue Calibration: " + messageText + "status:forwarded to /calibrate");
+        log:printInfo("Message received from queue Calibration: " + check message.getTextMessageContent() + "status:forwarded to /calibrate");
     }
 }
