@@ -74,7 +74,9 @@ service<http:Service> SensorEventService bind sensorEventListner {
         json requestMessage = check req.getJsonPayload();
         string msg = requestMessage.toString();
         mb:Message message = check queueGeoMessage.createTextMessage(msg);
-        _ = queueGeoMessage->send(message);
+        _ = queueGeoMessage->send(message) but {
+            error e => log:printError("Error sending message", err = e)
+        };
         res.setTextPayload("status: successful");
         _ = conn->respond(res);
         log:printInfo("Message received at /activity: " + msg + "status:forwarded");
@@ -88,7 +90,9 @@ service<http:Service> SensorEventService bind sensorEventListner {
         json requestMessage = check req.getJsonPayload();
         string msg = requestMessage.toString();
         mb:Message message = check queueHealthCheck.createTextMessage(msg);
-        _ = queueHealthCheck->send(message);
+        _ = queueHealthCheck->send(message) but {
+            error e => log:printError("Error sending message", err = e)
+        };
         res.setTextPayload("status: successful");
         _ = conn->respond(res);
         log:printInfo("Message received at /health: " + msg + "status:forwarded");
@@ -102,7 +106,9 @@ service<http:Service> SensorEventService bind sensorEventListner {
         json requestMessage = check req.getJsonPayload();
         string msg = requestMessage.toString();
         mb:Message message = check queueMaintenance.createTextMessage(msg);
-        _ = queueMaintenance->send(message);
+        _ = queueMaintenance->send(message) but {
+            error e => log:printError("Error sending message", err = e)
+        };
         res.setTextPayload("status: successful");
         _ = conn->respond(res);
         log:printInfo("Message received at /maintenance: " + msg + "status:forwarded");
@@ -116,7 +122,9 @@ service<http:Service> SensorEventService bind sensorEventListner {
         json requestMessage = check req.getJsonPayload();
         string msg = requestMessage.toString();
         mb:Message message = check queueCalibration.createTextMessage(msg);
-        _ = queueCalibration->send(message);
+        _ = queueCalibration->send(message) but {
+            error e => log:printError("Error sending message", err = e)
+        };
         res.setTextPayload("status: successful");
         _ = conn->respond(res);
         log:printInfo("Message received at /calibrate: " + msg + "status:forwarded");

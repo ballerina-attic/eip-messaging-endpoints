@@ -68,16 +68,24 @@ service<mb:Consumer> geoListener bind queueReceiver {
         log:printInfo("Message received with the priority of: " + check priority);
         if (priority == 1) {
             mb:Message msg = check NotifyAuthority.createTextMessage(messageText);
-            _ = NotifyAuthority->send(msg);
+            _ = NotifyAuthority->send(msg) but {
+                error e => log:printError("Error sending message", err = e)
+            };
         } else if (priority == 2) {
             mb:Message msg = check AlarmSetoff.createTextMessage(messageText);
-            _ = AlarmSetoff->send(msg);
+            _ = AlarmSetoff->send(msg) but {
+                error e => log:printError("Error sending message", err = e)
+            };
         } else if (priority == 3) {
             mb:Message msg = check StatusAndMaintenance.createTextMessage(messageText);
-            _ = StatusAndMaintenance->send(msg);
+            _ = StatusAndMaintenance->send(msg) but {
+                error e => log:printError("Error sending message", err = e)
+            };
         } else if (priority == 4) {
             mb:Message msg = check Research.createTextMessage(messageText);
-            _ = Research->send(msg);
+            _ = Research->send(msg) but {
+                error e => log:printError("Error sending message", err = e)
+            };
         }
     }
 }

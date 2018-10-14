@@ -51,18 +51,19 @@ service<http:Service> MessageProcessingService bind httpListner {
         http:Response res = new;
         json requestMessage = check req.getJsonPayload();
         log:printInfo("Message received at /activity: " + requestMessage.toString());
-        json responseMessage1 = { "Message": "An earthquake of magnitude 10 on the Richter scale near Panama",
+        json processedGeoJson = { "Message": "An earthquake of magnitude 10 on the Richter scale near Panama",
             "AlarmStatus": "ON", "DisasterRecoveryTeamStatus": "Dispatched" };
-        string msg1 = responseMessage1.toString();
-        mb:Message message1 = check queueProcessedQueue.createTextMessage(msg1);
-        var p = message1.setPriority(1);
-        _ = queueProcessedQueue->send(message1);
-        json responseMessage2 = { "AlarmStatus": "ON" };
-        string msg2 = responseMessage2.toString();
-        mb:Message message2 = check queueProcessedQueue.createTextMessage(msg2);
-        var p2 = message2.setPriority(2);
-        log:printInfo("Notifying authority and then set off alarms" + msg2);
-        _ = queueProcessedQueue->send(message2);
+        mb:Message processedGeoMessage = check queueProcessedQueue.createTextMessage(processedGeoJson.toString());
+        var geoMsgPriority = processedGeoMessage.setPriority(1);
+        _ = queueProcessedQueue->send(processedGeoMessage) but {
+            error e => log:printError("Error sending message", err = e)
+        };
+        json AlarmJson = { "AlarmStatus": "ON" };
+        mb:Message AlarmMessage = check queueProcessedQueue.createTextMessage(AlarmJson.toString());
+        var p2 = AlarmMessage.setPriority(2);
+        _ = queueProcessedQueue->send(AlarmMessage) but {
+            error e => log:printError("Error sending message", err = e)
+        };
         res.setTextPayload("status: Received and processed by Message Processor");
         _ = conn->respond(res);
     }
@@ -87,13 +88,13 @@ service<http:Service> MessageProcessingService bind httpListner {
     }
     maintenance(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        log:printInfo("Message received at /maintenance: " + requestMessage.toString());
+        log:printInfo("Message received at /maintenance: " + check req.getTextPayload());
         json responseMessage = { "Maintenance": "Need to send a maintenance team to the sensor with SID 4338" };
-        string msg = responseMessage.toString();
-        mb:Message message = check queueProcessedQueue.createTextMessage(msg);
+        mb:Message message = check queueProcessedQueue.createTextMessage(esponseMessage.toString());
         var p = message.setPriority(3);
-        _ = queueProcessedQueue->send(message);
+        _ = queueProcessedQueue->send(message) but {
+            error e => log:printError("Error sending message", err = e)
+        };
         res.setTextPayload("status: Received and processed by Message Processor");
         _ = conn->respond(res);
     }
@@ -105,13 +106,13 @@ service<http:Service> MessageProcessingService bind httpListner {
     }
     calibrate(endpoint conn, http:Request req) {
         http:Response res = new;
-        json requestMessage = check req.getJsonPayload();
-        log:printInfo("Message received at /calibrate: " + requestMessage.toString());
+        log:printInfo("Message received at /calibrate: " + check req.getTextPayload());
         json responseMessage = { "data store": "IUBA01IBMSTORE-0221", "entry no": "145QAZYNRFV11", "task": "ANALYZE", "priority": "IMMEDIATE" };
-        string msg = responseMessage.toString();
-        mb:Message message = check queueProcessedQueue.createTextMessage(msg);
+        mb:Message message = check queueProcessedQueue.createTextMessage(responseMessage.toString());
         var p = message.setPriority(4);
-        _ = queueProcessedQueue->send(message);
+        _ = queueProcessedQueue->send(message) but {
+            error e => log:printError("Error sending message", err = e)
+        };
         res.setTextPayload("status: Received and processed by Message Processor");
         _ = conn->respond(res);
     }
