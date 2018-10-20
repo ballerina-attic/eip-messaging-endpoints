@@ -27,45 +27,39 @@ string healthMessage;
 string maintenanceMessage;
 string calibMessage;
 
-# The endpoint ```queueGeoMessage``` define the message queue endpoint for
-# sending geo activities captured from the sensor.
+// Define the message queue endpoint for sending geo activities captured from the sensor.
 endpoint mb:SimpleQueueSender queueGeoMessage {
     host: "localhost",
     port: 5672,
     queueName: "GeoActivities"
 };
 
-# ```queueHealthCheck``` define the message queue endpoint to health check messages.
+// Define the message queue endpoint to health check messages.
 endpoint mb:SimpleQueueSender queueHealthCheck {
     host: "localhost",
     port: 5672,
     queueName: "SensorHealth"
 };
 
-# The endpoint ```queueMaintenance``` define the message queue endpoint for maintenance messages
+// Define the message queue endpoint for maintenance messages.
 endpoint mb:SimpleQueueSender queueMaintenance {
     host: "localhost",
     port: 5672,
     queueName: "Maintenance"
 };
 
-# The endpoint ```queueCalibration``` define the message queue endpoint for sensor calibration requests
+// Define the message queue endpoint for sensor calibration requests.
 endpoint mb:SimpleQueueSender queueCalibration {
     host: "localhost",
     port: 5672,
     queueName: "Calibration"
 };
 
-# The endpoint ```sensorEventListner``` is the service endpoint which listen to the variouus events.
+// Service endpoint which listen to the variouus events.
 endpoint http:Listener sensorEventListner {
     port: 8080
 };
 
-# The base path of the ```SensorEventService``` is ```\``` which listens to the ```sensorEventListner``` via HTTP/1.1
-# Resource path for receiving geo activities captured from the sensor is ```/activity```
-# Resource path for checking the health of the EP of the sensor is ```"/health"```
-# Resource path for invoking a service when the sensor needed mainteinance is ```/maintenance```
-# Resource path for invoking a service when the sensor needed calibration is ```/calibrat```
 @http:ServiceConfig {
     basePath: "/"
 }
@@ -109,8 +103,8 @@ service<http:Service> SensorEventService bind sensorEventListner {
     }
 }
 function messageSender() {
-    json sensorJson = { "ID": 27125088, "SID": 4344, "TIME_S": "1536423224", "TIME_E": "1536423584", "TYPE": "EQ",
-        "C_DATA": "41.40338, 2.17403", "R_SCALE": 10 };
+    json sensorJson = { "ID": 27125088, "SID": 4344, "TIME_S": "1536423224", "TIME_E": "1536423584",
+        "TYPE": "EQ", "C_DATA": "41.40338, 2.17403", "R_SCALE": 10 };
     mb:Message sensorMsg = check queueGeoMessage.createTextMessage(sensorJson.toString());
     _ = queueGeoMessage->send(sensorMsg) but {
         error e => log:printError("Error sending message", err = e)
@@ -129,7 +123,8 @@ function messageSender() {
         error e => log:printError("Error sending message", err = e)
     };
 
-    json calibJson = { "ID": 54256677, "SID": 7098, "TIME_S": "1536599984", "DATA": "Sensor need to be calibrated" };
+    json calibJson = { "ID": 54256677, "SID": 7098, "TIME_S": "1536599984", "DATA":
+    "Sensor need to be calibrated" };
     mb:Message calibMsg = check queueGeoMessage.createTextMessage(calibJson.toString());
     _ = queueCalibration->send(calibMsg) but {
         error e => log:printError("Error sending message", err = e)
@@ -150,8 +145,8 @@ function afterFunc() {
 }
 @test:Config
 function testGeoActivitiesEP() {
-    json sampleRequest = { "ID": 27125088, "SID": 4344, "TIME_S": "1536423224", "TIME_E": "1536423584", "TYPE": "EQ",
-        "C_DATA": "41.40338, 2.17403", "R_SCALE": 10 };
+    json sampleRequest = { "ID": 27125088, "SID": 4344, "TIME_S": "1536423224", "TIME_E":
+    "1536423584", "TYPE": "EQ", "C_DATA": "41.40338, 2.17403", "R_SCALE": 10 };
     string expectedResponse = sampleRequest.toString();
     test:assertEquals(activitymessage, expectedResponse, msg =
         "event-driven-and-pooling-consumer-service failed at testGeoActivties EndPoint");
@@ -173,8 +168,8 @@ function testMaintenanceEP() {
 }
 @test:Config
 function testCalibrationEP() {
-    json sampleRequest = { "ID": 54256677, "SID": 7098, "TIME_S": "1536599984", "DATA": "Sensor need to be calibrated" }
-    ;
+    json sampleRequest = { "ID": 54256677, "SID": 7098, "TIME_S": "1536599984", "DATA":
+    "Sensor need to be calibrated" };
     string expectedResponse = sampleRequest.toString();
     test:assertEquals(calibMessage, expectedResponse, msg =
         "event-driven-and-pooling-consumer-service failed at testCalibration EndPoint");

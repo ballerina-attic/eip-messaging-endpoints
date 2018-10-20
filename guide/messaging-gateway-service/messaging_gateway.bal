@@ -19,52 +19,40 @@ import ballerina/io;
 import ballerina/log;
 import ballerina/mb;
 
-# The ```queueGeoMessage``` endpoint defines the message queue endpoint which associated with the queue
-# ```GeoActivities``` for sending geo activities captured from the sensor.
+// Endpoint for sending geo activity messages.
 endpoint mb:SimpleQueueSender queueGeoMessage {
     host: "localhost",
     port: 5672,
     queueName: "GeoActivities"
 };
 
-# The ```queueHealthCheck``` endpoint defines the message queue endpoint which associated with the queue
-# ```SensorHealth``` to health check messages.
+// Endpoint for sending health messages.
 endpoint mb:SimpleQueueSender queueHealthCheck {
     host: "localhost",
     port: 5672,
     queueName: "SensorHealth"
 };
 
-# The ```queueMaintenance``` define the message queue endpoint which associated with the queue ```Maintenance```
-# for maintenance messages.
+// Endpoint for sending maintenance messages.
 endpoint mb:SimpleQueueSender queueMaintenance {
     host: "localhost",
     port: 5672,
     queueName: "Maintenance"
 };
 
-# The ```queueCalibration``` define the message queue endpoint which associated with the queue ```Calibration```
-# for maintenance messages.
+// Endpoint for sending calibration messages.
 endpoint mb:SimpleQueueSender queueCalibration {
     host: "localhost",
     port: 5672,
     queueName: "Calibration"
 };
 
-# The endpoint ```sensorEventListner``` associated with the service ```SensorEventService```.
-# The port associated with the service is 9090.
+// The endpoint associated with the service SensorEventService.
 endpoint http:Listener sensorEventListner {
     port: 9090
 };
 
-# The base path of the ```SensorEventService``` service is ```/service``` via HTTP/1.1.
-# The resource path for receiving geo activities captured from the sensor is defined as ```/activity```.
-# The resource path for checking the health of the EP of the sensor is defined as ```/health```
-# The resource path for invoking a service when the sensor needed mainteinance is defined as ```/maintenance```
-# The resource path for invoking a service when the sensor needed calibration is defined as ```/calibrate```
-# The received messages on each aforementioned resources paths will be forworded to each related message queues
-# by the assoaciation of below queue senders.
-# ```queueGeoMessage```, ```queueHealthCheck```,  ```queueMaintenance```, and the ```queueCalibration```.
+// Service to receive messages.
 @http:ServiceConfig {
     basePath: "/service"
 }

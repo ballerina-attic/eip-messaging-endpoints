@@ -20,8 +20,7 @@ import ballerina/log;
 import ballerina/mb;
 import ballerina/io;
 
-# In ```messaging-dispatcher``` service there are three endpoints ```http://localhost:8080/alarm1```,
-# ```http://localhost:8080/alarm2```, and ```http://localhost:8080/alarm3```.
+// Endpoints for dispatch messages arrive at messaging dispatcher service
 endpoint http:Client  alarm1 {
     url: "http://localhost:8080/alarm1"
 };
@@ -34,8 +33,7 @@ endpoint http:Client  alarm3 {
     url: "http://localhost:8080/alarm3"
 };
 
-# The endpoint ```subscriberSetAlarmOff``` which subscribed to the topicPattern: "```Alarm```",
-# consumes the messages of that pattern.
+// The Jms endpoint which subscribed to the topicPattern: Alarm to consumes messages.
 endpoint jms:SimpleTopicSubscriber subscriberSetAlarmOff {
     initialContextFactory: "bmbInitialContextFactory",
     providerUrl: "amqp://admin:admin@carbon/carbon?" + "brokerlist='tcp://localhost:5672'",
@@ -43,8 +41,7 @@ endpoint jms:SimpleTopicSubscriber subscriberSetAlarmOff {
     topicPattern: "Alarm"
 };
 
-# The ```mbListener``` service associated with the ```subscriberSetAlarmOff```
-# topic-subscriber and dispatch the messages to each of the aforementioned three endpoints when a message received.
+//Service to dispatch the messages to alarm1, alarm2, alarm3 endpoints.
 service<mb:Consumer> mbListener bind subscriberSetAlarmOff {
     onMessage(endpoint consumer, mb:Message message) {
         http:Request outRequest;
@@ -55,7 +52,7 @@ service<mb:Consumer> mbListener bind subscriberSetAlarmOff {
         var response1 = alarm1->post("/", outRequest);
         var response2 = alarm2->post("/", outRequest);
         var response3 = alarm3->post("/", outRequest);
-        log:printInfo("Message had forwarded to /alarm1, /alarm2, /alarm3 endpoints: " + messageText +
-                "status:forwarded");
+        log:printInfo("Message had forwarded to /alarm1, /alarm2, /alarm3 endpoints: " + messageText
+                + "status:forwarded");
     }
 }

@@ -19,26 +19,19 @@ import ballerina/io;
 import ballerina/log;
 import ballerina/mb;
 
-# The endpoint ```queueProcessedQueue``` is the message queue endpoint for sending newly processed messages from
-# the ```message-processor-service```.
+// The message queue endpoint for sending newly processed messages.
 endpoint mb:SimpleQueueSender queueProcessedQueue {
     host: "localhost",
     port: 5672,
     queueName: "ProcessedQueue"
 };
 
-# The endpoint ```httpListner``` which listen on port:```8080``` is associated with the ```MessageProcessingService```
-# service endpoint.
+// The httpListner endpoint which associated with the MessageProcessingService service.
 endpoint http:Listener httpListner {
     port: 8080
 };
 
-# The base path for the ```MessageProcessingService``` which associated with ```httpListner``` via HTTP/1.1.
-# The resources path for receiving geo activities is ```/activity```
-# The resources path for receiving geo activities is ```/health```
-# The resources path for receiving geo activities is ```/maintenanc```
-# The resources path for receiving geo activities is ```/calibrate```
-# Each above resource paths consumes and produces messages of Content-Type: ```application/json```
+// Service to process messages and forward them.
 @http:ServiceConfig {
     basePath: "/"
 }
@@ -52,9 +45,11 @@ service<http:Service> MessageProcessingService bind httpListner {
     activity(endpoint conn, http:Request req) {
         http:Response res = new;
         log:printInfo("Message received at /activity: " + check req.getTextPayload());
-        json processedGeoJson = { "Message": "An earthquake of magnitude 10 on the Richter scale near Panama",
-            "AlarmStatus": "ON", "DisasterRecoveryTeamStatus": "Dispatched" };
-        mb:Message processedGeoMessage = check queueProcessedQueue.createTextMessage(processedGeoJson.toString());
+        json processedGeoJson = { "Message":
+        "An earthquake of magnitude 10 on the Richter scale near Panama", "AlarmStatus": "ON",
+            "DisasterRecoveryTeamStatus": "Dispatched" };
+        mb:Message processedGeoMessage = check queueProcessedQueue.createTextMessage(
+                                                                      processedGeoJson.toString());
         var geoMsgPriority = processedGeoMessage.setPriority(1);
         _ = queueProcessedQueue->send(processedGeoMessage) but {
             error e => log:printError("Error sending message", err = e)
@@ -89,8 +84,10 @@ service<http:Service> MessageProcessingService bind httpListner {
     maintenance(endpoint conn, http:Request req) {
         http:Response res = new;
         log:printInfo("Message received at /maintenance: " + check req.getTextPayload());
-        json responseMessage = { "Maintenance": "Need to send a maintenance team to the sensor with SID 4338" };
-        mb:Message message = check queueProcessedQueue.createTextMessage(responseMessage.toString());
+        json responseMessage = { "Maintenance":
+        "Need to send a maintenance team to the sensor with SID 4338" };
+        mb:Message message = check queueProcessedQueue.createTextMessage(responseMessage.toString())
+        ;
         var p = message.setPriority(3);
         _ = queueProcessedQueue->send(message) but {
             error e => log:printError("Error sending message", err = e)
@@ -107,9 +104,10 @@ service<http:Service> MessageProcessingService bind httpListner {
     calibrate(endpoint conn, http:Request req) {
         http:Response res = new;
         log:printInfo("Message received at /calibrate: " + check req.getTextPayload());
-        json responseMessage = { "data store": "IUBA01IBMSTORE-0221", "entry no": "145QAZYNRFV11", "task": "ANALYZE",
-            "priority": "IMMEDIATE" };
-        mb:Message message = check queueProcessedQueue.createTextMessage(responseMessage.toString());
+        json responseMessage = { "data store": "IUBA01IBMSTORE-0221", "entry no": "145QAZYNRFV11",
+            "task": "ANALYZE", "priority": "IMMEDIATE" };
+        mb:Message message = check queueProcessedQueue.createTextMessage(responseMessage.toString())
+        ;
         var p = message.setPriority(4);
         _ = queueProcessedQueue->send(message) but {
             error e => log:printError("Error sending message", err = e)

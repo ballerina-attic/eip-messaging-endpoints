@@ -22,71 +22,64 @@ import ballerina/runtime;
 import ballerina/task;
 import ballerina/test;
 
-# The ```queueSender``` is for sending the messages to the queue ```ProcessedQueue``` in order to process them
+// Endpoint for sending the messages to ProcessedQueue.
 endpoint mb:SimpleQueueSender queueSender {
     host: "localhost",
     port: 5672,
     queueName: "ProcessedQueue"
 };
 
-# The endpoint ```subscriberSetAlarmOff``` subscribes to the topic-pattern of ```Alarm```
-# and consumes messages of that topic.
+// Topic subscriber to the pattern: Alarm
 endpoint mb:SimpleTopicSubscriber subscriberSetAlarmOff {
     topicPattern: "Alarm"
 };
 
-# The endpoint ```subscriberNotifyAuthority``` subscribes to the topic-pattern of ```Authority```
-# and consumes messages of that topic.
+// Topic subscriber to the pattern: Authority
 endpoint mb:SimpleTopicSubscriber subscriberNotifyAuthority {
     topicPattern: "Authority"
 };
 
-# The endpoint ```subscriberMaintenance``` subscribes to the topic-pattern of ```StatusAndMaintenance```
-# and consumes messages of that topic.
+
+// Topic subscriber to the pattern: StatusAndMaintenance
 endpoint mb:SimpleTopicSubscriber subscriberMaintenance {
     topicPattern: "StatusAndMaintenance"
 };
 
-# The endpoint ```subscriberResearch``` subscribes to the topic-pattern of ```Research```
-# and consumes messages of that topic.
+// Topic subscriber to the pattern: Research
 endpoint mb:SimpleTopicSubscriber subscriberResearch {
     topicPattern: "Research"
 };
 
 string[4] messageTexts;
 
-# The service ```AuthorityListener``` assiciated with the ```subscriberNotifyAuthority```
-# topic-subscriber which consumes the messages of the Authority topic.
+// Service to  consumes the messages of the Authority topic.
 service<mb:Consumer> AuthorityListener bind subscriberNotifyAuthority {
     onMessage(endpoint consumer, mb:Message message) {
         messageTexts[0] = untaint check message.getTextMessageContent();
     }
 }
-# The service ```AlarmListner``` assiciated with the ```subscriberSetAlarmOff```
-# topic-subscriber which consumes the messages of the Alarm topic.
+// Service to  consumes the messages of the Alarm topic.
 service<mb:Consumer> AlarmListner bind subscriberSetAlarmOff {
     onMessage(endpoint consumer, mb:Message message) {
         messageTexts[1] = untaint check message.getTextMessageContent();
     }
 }
-# The service ```MaintenanceListener``` assiciated with the ```subscriberMaintenance```
-# topic-subscriber which consumes the messages of the StatusAndMaintenance topic.
+// Service to  consumes the messages of the StatusAndMaintenance topic.
 service<mb:Consumer> MaintenanceListener bind subscriberMaintenance {
     onMessage(endpoint consumer, mb:Message message) {
         messageTexts[2] = untaint check message.getTextMessageContent();
     }
 }
-# The service ```ResearchListener``` assiciated with the ```subscriberResearch```
-# topic-subscriber which consumes the messages of the Research topic.
+// Service to  consumes the messages of the Research topic.
 service<mb:Consumer> ResearchListener bind subscriberResearch {
     onMessage(endpoint consumer, mb:Message message) {
         messageTexts[3] = untaint check message.getTextMessageContent();
     }
 }
-# The function ```messagePublisher()``` sends the messages to ```ProcessedQueue```.
+// To sends the messages to ProcessedQueue.
 function messagePublisher() {
-    json priorityOneJson = { "Message": "An earthquake of magnitude 10 on the Richter scale near Panama", "AlarmStatus":
-    "ON",
+    json priorityOneJson = { "Message":
+    "An earthquake of magnitude 10 on the Richter scale near Panama", "AlarmStatus": "ON",
         "DisasterRecoveryTeamStatus": "Dispatched" };
     mb:Message priorityOneMessage = check queueSender.createTextMessage(priorityOneJson.toString());
     var priorityOne = priorityOneMessage.setPriority(1);
@@ -103,17 +96,20 @@ function messagePublisher() {
     };
     runtime:sleep(5000);
 
-    json priorityThreeJson = { "Maintenance": "Need to send a maintenance team to the sensor with SID 4338" };
-    mb:Message priorityThreeMessage = check queueSender.createTextMessage(priorityThreeJson.toString());
+    json priorityThreeJson = { "Maintenance":
+    "Need to send a maintenance team to the sensor with SID 4338" };
+    mb:Message priorityThreeMessage = check queueSender.createTextMessage(priorityThreeJson.toString
+        ());
     var priorityThree = priorityThreeMessage.setPriority(3);
     _ = queueSender->send(priorityThreeMessage) but {
         error e => log:printError("Error sending message", err = e)
     };
     runtime:sleep(5000);
 
-    json priorityFourJson = { "data store": "IUBA01IBMSTORE-0221", "entry no": "145QAZYNRFV11", "task": "ANALYZE",
-        "priority": "IMMEDIATE" };
-    mb:Message priorityFourMessage = check queueSender.createTextMessage(priorityFourJson.toString());
+    json priorityFourJson = { "data store": "IUBA01IBMSTORE-0221", "entry no": "145QAZYNRFV11",
+        "task": "ANALYZE", "priority": "IMMEDIATE" };
+    mb:Message priorityFourMessage = check queueSender.createTextMessage(priorityFourJson.toString()
+    );
     var priorityFour = priorityFourMessage.setPriority(4);
     _ = queueSender->send(priorityFourMessage) but {
         error e => log:printError("Error sending message", err = e)
@@ -139,8 +135,9 @@ function afterFunc() {
 }
 @test:Config
 function testNotifyAuthority() {
-    json priorityOneJson = { "Message": "Earth Quake of 10 Richter Scale at the loaction near Panama", "AlarmStatus":
-    "ON", "DesasterRecoveryTeamStatus": "Dispatched" };
+    json priorityOneJson = { "Message":
+    "Earth Quake of 10 Richter Scale at the loaction near Panama", "AlarmStatus": "ON",
+        "DesasterRecoveryTeamStatus": "Dispatched" };
     string expectedResponse = priorityOneJson.toString();
     log:printInfo("Message 1 is :" + messageTexts[0]);
     test:assertEquals(messageTexts[0], expectedResponse, msg =
@@ -155,7 +152,8 @@ function testSetAlarmOff() {
 }
 @test:Config
 function testMaintenance() {
-    json priorityThreeJson = { "Maintenance": "Need to send a maintenance team to the sensor with SID 4338" };
+    json priorityThreeJson = { "Maintenance":
+    "Need to send a maintenance team to the sensor with SID 4338" };
     string expectedResponse = priorityThreeJson.toString();
     test:assertEquals(messageTexts[2], expectedResponse, msg =
         "polling-and-selective-consumer-service failed at testMaintenance");
