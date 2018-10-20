@@ -29,47 +29,55 @@ endpoint mb:SimpleQueueSender queueSender {
     queueName: "ProcessedQueue"
 };
 
-# The endpoint ```subscriberSetAlarmOff``` subscribes to the topic-pattern of ```Alarm``` and consumes messages of that topic.
+# The endpoint ```subscriberSetAlarmOff``` subscribes to the topic-pattern of ```Alarm```
+# and consumes messages of that topic.
 endpoint mb:SimpleTopicSubscriber subscriberSetAlarmOff {
     topicPattern: "Alarm"
 };
 
-# The endpoint ```subscriberNotifyAuthority``` subscribes to the topic-pattern of ```Authority``` and consumes messages of that topic.
+# The endpoint ```subscriberNotifyAuthority``` subscribes to the topic-pattern of ```Authority```
+# and consumes messages of that topic.
 endpoint mb:SimpleTopicSubscriber subscriberNotifyAuthority {
     topicPattern: "Authority"
 };
 
-# The endpoint ```subscriberMaintenance``` subscribes to the topic-pattern of ```StatusAndMaintenance``` and consumes messages of that topic.
+# The endpoint ```subscriberMaintenance``` subscribes to the topic-pattern of ```StatusAndMaintenance```
+# and consumes messages of that topic.
 endpoint mb:SimpleTopicSubscriber subscriberMaintenance {
     topicPattern: "StatusAndMaintenance"
 };
 
-# The endpoint ```subscriberResearch``` subscribes to the topic-pattern of ```Research``` and consumes messages of that topic.
+# The endpoint ```subscriberResearch``` subscribes to the topic-pattern of ```Research```
+# and consumes messages of that topic.
 endpoint mb:SimpleTopicSubscriber subscriberResearch {
     topicPattern: "Research"
 };
 
 string[4] messageTexts;
 
-# The service ```AuthorityListener``` assiciated with the ```subscriberNotifyAuthority``` topic-subscriber which consumes the messages of the Authority topic.
+# The service ```AuthorityListener``` assiciated with the ```subscriberNotifyAuthority```
+# topic-subscriber which consumes the messages of the Authority topic.
 service<mb:Consumer> AuthorityListener bind subscriberNotifyAuthority {
     onMessage(endpoint consumer, mb:Message message) {
         messageTexts[0] = untaint check message.getTextMessageContent();
     }
 }
-# The service ```AlarmListner``` assiciated with the ```subscriberSetAlarmOff``` topic-subscriber which consumes the messages of the Alarm topic.
+# The service ```AlarmListner``` assiciated with the ```subscriberSetAlarmOff```
+# topic-subscriber which consumes the messages of the Alarm topic.
 service<mb:Consumer> AlarmListner bind subscriberSetAlarmOff {
     onMessage(endpoint consumer, mb:Message message) {
         messageTexts[1] = untaint check message.getTextMessageContent();
     }
 }
-# The service ```MaintenanceListener``` assiciated with the ```subscriberMaintenance``` topic-subscriber which consumes the messages of the StatusAndMaintenance topic.
+# The service ```MaintenanceListener``` assiciated with the ```subscriberMaintenance```
+# topic-subscriber which consumes the messages of the StatusAndMaintenance topic.
 service<mb:Consumer> MaintenanceListener bind subscriberMaintenance {
     onMessage(endpoint consumer, mb:Message message) {
         messageTexts[2] = untaint check message.getTextMessageContent();
     }
 }
-# The service ```ResearchListener``` assiciated with the ```subscriberResearch``` topic-subscriber which consumes the messages of the Research topic.
+# The service ```ResearchListener``` assiciated with the ```subscriberResearch```
+# topic-subscriber which consumes the messages of the Research topic.
 service<mb:Consumer> ResearchListener bind subscriberResearch {
     onMessage(endpoint consumer, mb:Message message) {
         messageTexts[3] = untaint check message.getTextMessageContent();
@@ -77,7 +85,8 @@ service<mb:Consumer> ResearchListener bind subscriberResearch {
 }
 # The function ```messagePublisher()``` sends the messages to ```ProcessedQueue```.
 function messagePublisher() {
-    json priorityOneJson = { "Message": "An earthquake of magnitude 10 on the Richter scale near Panama", "AlarmStatus": "ON",
+    json priorityOneJson = { "Message": "An earthquake of magnitude 10 on the Richter scale near Panama", "AlarmStatus":
+    "ON",
         "DisasterRecoveryTeamStatus": "Dispatched" };
     mb:Message priorityOneMessage = check queueSender.createTextMessage(priorityOneJson.toString());
     var priorityOne = priorityOneMessage.setPriority(1);
@@ -102,7 +111,8 @@ function messagePublisher() {
     };
     runtime:sleep(5000);
 
-    json priorityFourJson = { "data store": "IUBA01IBMSTORE-0221", "entry no": "145QAZYNRFV11", "task": "ANALYZE", "priority": "IMMEDIATE" };
+    json priorityFourJson = { "data store": "IUBA01IBMSTORE-0221", "entry no": "145QAZYNRFV11", "task": "ANALYZE",
+        "priority": "IMMEDIATE" };
     mb:Message priorityFourMessage = check queueSender.createTextMessage(priorityFourJson.toString());
     var priorityFour = priorityFourMessage.setPriority(4);
     _ = queueSender->send(priorityFourMessage) but {

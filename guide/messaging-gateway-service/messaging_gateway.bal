@@ -19,35 +19,40 @@ import ballerina/io;
 import ballerina/log;
 import ballerina/mb;
 
-# The ```queueGeoMessage``` endpoint defines the message queue endpoint which associated with the queue ```GeoActivities``` for sending geo activities captured from the sensor.
+# The ```queueGeoMessage``` endpoint defines the message queue endpoint which associated with the queue
+# ```GeoActivities``` for sending geo activities captured from the sensor.
 endpoint mb:SimpleQueueSender queueGeoMessage {
     host: "localhost",
     port: 5672,
     queueName: "GeoActivities"
 };
 
-# The ```queueHealthCheck``` endpoint defines the message queue endpoint which associated with the queue ```SensorHealth``` to health check messages.
+# The ```queueHealthCheck``` endpoint defines the message queue endpoint which associated with the queue
+# ```SensorHealth``` to health check messages.
 endpoint mb:SimpleQueueSender queueHealthCheck {
     host: "localhost",
     port: 5672,
     queueName: "SensorHealth"
 };
 
-# The ```queueMaintenance``` define the message queue endpoint which associated with the queue ```Maintenance``` for maintenance messages.
+# The ```queueMaintenance``` define the message queue endpoint which associated with the queue ```Maintenance```
+# for maintenance messages.
 endpoint mb:SimpleQueueSender queueMaintenance {
     host: "localhost",
     port: 5672,
     queueName: "Maintenance"
 };
 
-# The ```queueCalibration``` define the message queue endpoint which associated with the queue ```Calibration``` for maintenance messages.
+# The ```queueCalibration``` define the message queue endpoint which associated with the queue ```Calibration```
+# for maintenance messages.
 endpoint mb:SimpleQueueSender queueCalibration {
     host: "localhost",
     port: 5672,
     queueName: "Calibration"
 };
 
-# The endpoint ```sensorEventListner``` associated with the service ```SensorEventService```. The port associated with the service is 9090.
+# The endpoint ```sensorEventListner``` associated with the service ```SensorEventService```.
+# The port associated with the service is 9090.
 endpoint http:Listener sensorEventListner {
     port: 9090
 };
@@ -57,7 +62,8 @@ endpoint http:Listener sensorEventListner {
 # The resource path for checking the health of the EP of the sensor is defined as ```/health```
 # The resource path for invoking a service when the sensor needed mainteinance is defined as ```/maintenance```
 # The resource path for invoking a service when the sensor needed calibration is defined as ```/calibrate```
-# The received messages on each aforementioned resources paths will be forworded to each related message queues by the assoaciation of below queue senders.
+# The received messages on each aforementioned resources paths will be forworded to each related message queues
+# by the assoaciation of below queue senders.
 # ```queueGeoMessage```, ```queueHealthCheck```,  ```queueMaintenance```, and the ```queueCalibration```.
 @http:ServiceConfig {
     basePath: "/service"

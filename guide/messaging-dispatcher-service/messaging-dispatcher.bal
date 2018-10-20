@@ -20,7 +20,8 @@ import ballerina/log;
 import ballerina/mb;
 import ballerina/io;
 
-# In ```messaging-dispatcher``` service there are three endpoints ```http://localhost:8080/alarm1```, ```http://localhost:8080/alarm2```, and ```http://localhost:8080/alarm3```.
+# In ```messaging-dispatcher``` service there are three endpoints ```http://localhost:8080/alarm1```,
+# ```http://localhost:8080/alarm2```, and ```http://localhost:8080/alarm3```.
 endpoint http:Client  alarm1 {
     url: "http://localhost:8080/alarm1"
 };
@@ -33,7 +34,8 @@ endpoint http:Client  alarm3 {
     url: "http://localhost:8080/alarm3"
 };
 
-# The endpoint ```subscriberSetAlarmOff``` which subscribed to the topicPattern: "```Alarm```", consumes the messages of that pattern.
+# The endpoint ```subscriberSetAlarmOff``` which subscribed to the topicPattern: "```Alarm```",
+# consumes the messages of that pattern.
 endpoint jms:SimpleTopicSubscriber subscriberSetAlarmOff {
     initialContextFactory: "bmbInitialContextFactory",
     providerUrl: "amqp://admin:admin@carbon/carbon?" + "brokerlist='tcp://localhost:5672'",
@@ -41,7 +43,8 @@ endpoint jms:SimpleTopicSubscriber subscriberSetAlarmOff {
     topicPattern: "Alarm"
 };
 
-# The ```mbListener``` service associated with the ```subscriberSetAlarmOff``` topic-subscriber and dispatch the messages to each of the aforementioned three endpoints when a message received.
+# The ```mbListener``` service associated with the ```subscriberSetAlarmOff```
+# topic-subscriber and dispatch the messages to each of the aforementioned three endpoints when a message received.
 service<mb:Consumer> mbListener bind subscriberSetAlarmOff {
     onMessage(endpoint consumer, mb:Message message) {
         http:Request outRequest;

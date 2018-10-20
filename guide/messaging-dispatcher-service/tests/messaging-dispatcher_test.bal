@@ -23,7 +23,8 @@ import ballerina/runtime;
 import ballerina/task;
 import ballerina/test;
 
-# The endpoint ```SetoffAlarm``` is to publish Priority 2 messages with the topicPattern: "```Alarm```", which are intend to dispatch to several endpoints later on.
+# The endpoint ```SetoffAlarm``` is to publish Priority 2 messages with the topicPattern: "```Alarm```",
+# which are intend to dispatch to several endpoints later on.
 endpoint jms:SimpleTopicPublisher SetoffAlarm {
     initialContextFactory: "bmbInitialContextFactory",
     providerUrl: "amqp://admin:admin@carbon/carbon" + "?brokerlist='tcp://localhost:5672'",
@@ -31,7 +32,8 @@ endpoint jms:SimpleTopicPublisher SetoffAlarm {
     topicPattern: "Alarm"
 };
 
-# The ```serviceEventListner``` is the endpoint which defined the attributes associated with the ```EventService``` endpoint.
+# The ```serviceEventListner``` is the endpoint which defined the attributes associated with
+# the ```EventService```endpoint.
 endpoint http:Listener serviceEventListner {
     port: 8080
 };

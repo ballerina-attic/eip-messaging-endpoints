@@ -39,7 +39,8 @@ endpoint mb:SimpleTopicPublisher AlarmSetoff {
     topicPattern: "Alarm"
 };
 
-# The endpoint ```StatusAndMaintenance``` defines the topic to publish  Priority 3 messages as ```StatusAndMaintenance```.
+# The endpoint ```StatusAndMaintenance``` defines the topic to publish Priority 3 messages as
+# ```StatusAndMaintenance```.
 endpoint mb:SimpleTopicPublisher StatusAndMaintenance {
     host: "localhost",
     port: 5672,
@@ -53,7 +54,8 @@ endpoint mb:SimpleTopicPublisher Research {
     topicPattern: "Research"
 };
 
-# The ```geoListener``` service is associated with the ```queueReceiver``` endpoint to receive messages and do the selection process based on the priority and then publish the message to the related topic.
+# The ```geoListener``` service is associated with the ```queueReceiver```endpoint to receive messages
+# and do the selection process based on the priority and then publish the message to the related topic.
 # If the message has a priority of 1 then publish the  message using ```NotifyAuthority``` endpoint.
 # If the message has a priority of 2 then publish the  message using ```AlarmSetoff``` endpoint.
 # If the message has a priority of 3 then publish the  message using ```StatusAndMaintenance``` endpoint.

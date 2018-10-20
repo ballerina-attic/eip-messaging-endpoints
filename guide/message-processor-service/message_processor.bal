@@ -19,14 +19,16 @@ import ballerina/io;
 import ballerina/log;
 import ballerina/mb;
 
-# The endpoint ```queueProcessedQueue``` is the message queue endpoint for sending newly processed messages from the ```message-processor-service```.
+# The endpoint ```queueProcessedQueue``` is the message queue endpoint for sending newly processed messages from
+# the ```message-processor-service```.
 endpoint mb:SimpleQueueSender queueProcessedQueue {
     host: "localhost",
     port: 5672,
     queueName: "ProcessedQueue"
 };
 
-# The endpoint ```httpListner``` which listen on port:```8080``` is associated with the ```MessageProcessingService``` service endpoint.
+# The endpoint ```httpListner``` which listen on port:```8080``` is associated with the ```MessageProcessingService```
+# service endpoint.
 endpoint http:Listener httpListner {
     port: 8080
 };
@@ -105,7 +107,8 @@ service<http:Service> MessageProcessingService bind httpListner {
     calibrate(endpoint conn, http:Request req) {
         http:Response res = new;
         log:printInfo("Message received at /calibrate: " + check req.getTextPayload());
-        json responseMessage = { "data store": "IUBA01IBMSTORE-0221", "entry no": "145QAZYNRFV11", "task": "ANALYZE", "priority": "IMMEDIATE" };
+        json responseMessage = { "data store": "IUBA01IBMSTORE-0221", "entry no": "145QAZYNRFV11", "task": "ANALYZE",
+            "priority": "IMMEDIATE" };
         mb:Message message = check queueProcessedQueue.createTextMessage(responseMessage.toString());
         var p = message.setPriority(4);
         _ = queueProcessedQueue->send(message) but {

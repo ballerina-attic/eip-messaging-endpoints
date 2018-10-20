@@ -27,7 +27,8 @@ string healthMessage;
 string maintenanceMessage;
 string calibMessage;
 
-# The endpoint ```queueGeoMessage``` define the message queue endpoint for sending geo activities captured from the sensor.
+# The endpoint ```queueGeoMessage``` define the message queue endpoint for
+# sending geo activities captured from the sensor.
 endpoint mb:SimpleQueueSender queueGeoMessage {
     host: "localhost",
     port: 5672,
@@ -144,7 +145,7 @@ function beforeFunc() {
 // After suite function
 @test:AfterSuite
 function afterFunc() {
-// Stop SensorEventService service
+    // Stop SensorEventService service
     test:stopServices("SensorEventService");
 }
 @test:Config
