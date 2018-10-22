@@ -1,4 +1,4 @@
-# eip-messaging-endpoints
+# Messaging Endpoints
 
 This Guide will illustrate how to use ballerina to implement following scenarios.
 1. Messaging Gateway 
