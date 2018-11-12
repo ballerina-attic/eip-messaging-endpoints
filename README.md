@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ballerina-guides/eip-messaging-endpoints.svg?branch=master)](https://travis-ci.org/ballerina-guides/eip-messaging-endpoints)
+
 # Messaging Endpoints
 
 This Guide will illustrate how to use ballerina to implement following scenarios.
